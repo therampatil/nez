@@ -1,0 +1,64 @@
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V7
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# ── VS Code ───────────────────────────────────────────────────────────────────
+.vscode/
+
+# ── Python / Backend ──────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+.env
+.env.*
+!.env.example
+venv/
+.venv/
+env/
+*.sqlite3
+*.db
+
+# ── Flutter / Dart ────────────────────────────────────────────────────────────
+nez_app/.dart_tool/
+nez_app/.flutter-plugins
+nez_app/.flutter-plugins-dependencies
+nez_app/.flutter-plugins-dependencies *
+nez_app/.packages
+nez_app/build/
+nez_app/.pub-cache/
+nez_app/.pub/
+nez_app/ios/Flutter/Generated.xcconfig
+nez_app/ios/Flutter/flutter_export_environment.sh
+nez_app/ios/Runner/GeneratedPluginRegistrant.*
+nez_app/macos/Flutter/GeneratedPluginRegistrant.*
+nez_app/android/local.properties
+nez_app/android/.gradle/
+nez_app/android/app/google-services.json
+nez_app/ios/Runner/GoogleService-Info.plist
+
+# ── Secrets / Keys ────────────────────────────────────────────────────────────
+*.pem
+*.key
+*.cert
+google-services.json
+google-services copy.json
+GoogleService-Info.plist
+firebase_options.dart
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+*.log
+*.tmp
+*.bak
+resources/
