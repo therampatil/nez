@@ -22,9 +22,6 @@ class Settings(BaseSettings):
     # Public-facing base URL of this backend (used in email links).
     APP_BASE_URL: str = "http://localhost:8000"
 
-    # ── Gemini (AI processing) ────────────────────────────────────────────
-    GEMINI_API_KEY: str = ""
-
     class Config:
         env_file = ".env"
         extra = "ignore"  # don't reject unknown env vars

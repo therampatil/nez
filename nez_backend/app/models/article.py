@@ -4,6 +4,12 @@ from app.core.database import Base
 
 
 class Article(Base):
+    """Read-only mirror of the shared articles table.
+
+    Articles are ingested and AI-processed by a separate backend.
+    This backend only *reads* them to build personalised user feeds.
+    """
+
     __tablename__ = "articles"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -16,16 +22,16 @@ class Article(Base):
     category_id = Column(Integer, ForeignKey("categories.id"))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    # ── AI-generated intelligence fields ──────────────────────────────────
-    overview = Column(Text, nullable=True)           # What happened (plain prose)
-    in_context = Column(Text, nullable=True)         # Background / what you should know
-    why_it_matters = Column(Text, nullable=True)     # Newline-separated bullet points
-    category = Column(String(50), nullable=True)     # AI-assigned topic category
+    # ── Pre-analysed intelligence fields (written by the news backend) ────
+    overview = Column(Text, nullable=True)
+    in_context = Column(Text, nullable=True)
+    why_it_matters = Column(Text, nullable=True)
+    category = Column(String(50), nullable=True)
 
-    # ── Processing state ───────────────────────────────────────────────────
-    is_processed = Column(Boolean, default=False, nullable=False)  # AI has run
-    is_high_quality = Column(Boolean, nullable=True)               # AI quality gate
-    processed_at = Column(DateTime(timezone=True), nullable=True)  # When AI ran
+    # ── Processing state (managed by the news backend) ────────────────────
+    is_processed = Column(Boolean, default=False, nullable=False)
+    is_high_quality = Column(Boolean, nullable=True)
+    processed_at = Column(DateTime(timezone=True), nullable=True)
 
     __table_args__ = (
         Index("ix_articles_published_at_desc", published_at.desc()),

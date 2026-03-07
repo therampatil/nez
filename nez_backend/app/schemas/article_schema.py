@@ -24,13 +24,13 @@ class ArticleResponse(BaseModel):
     category_id: Optional[int] = None
     created_at: datetime
 
-    # ── AI-generated intelligence fields ──────────────────────────────────
+    # ── Pre-analysed intelligence fields (from the news backend) ─────────
     overview: Optional[str] = None
-    in_context: Optional[str] = None          # background / why it's happening
-    why_it_matters: Optional[str] = None      # newline-separated bullet points
-    category: Optional[str] = None            # AI-assigned topic (e.g. "Politics")
-    is_high_quality: Optional[bool] = None    # AI quality gate result
-    is_processed: bool = False                # whether AI has run on this article
+    in_context: Optional[str] = None
+    why_it_matters: Optional[str] = None
+    category: Optional[str] = None
+    is_high_quality: Optional[bool] = None
+    is_processed: bool = False
 
     class Config:
         from_attributes = True

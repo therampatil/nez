@@ -1,3 +1,9 @@
+"""Nez user-facing backend.
+
+Handles auth, profiles, preferences, feed ranking, interactions, and insights.
+Articles are read from a shared database populated by a separate news backend.
+"""
+
 import logging
 
 from fastapi import FastAPI
