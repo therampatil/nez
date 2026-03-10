@@ -13,8 +13,8 @@ from app.api.routes import auth
 from app.core.database import engine, Base
 from app.core.migrations import run_migrations
 
-# Import all models so Base.metadata knows about them
-from app.models import user, category, article, interaction, bookmark  # noqa: F401
+# Import all user-DB models so Base.metadata knows about them
+from app.models import user, interaction, bookmark  # noqa: F401
 from app.models import user_preference  # noqa: F401
 
 logging.basicConfig(

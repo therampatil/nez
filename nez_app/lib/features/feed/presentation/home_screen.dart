@@ -20,9 +20,13 @@ const _feedCategories = [
   'Laws',
   'Business',
   'Technology',
-  'Finance',
+  'Money',
   'Society',
   'Global',
+  'Environment',
+  'Career',
+  'Social',
+  'Education',
 ];
 
 // ──────────────────────────────────────────────
@@ -75,31 +79,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   /// Returns articles filtered by selected category.
-  /// "News Feed" shows only articles whose source matches any of the user's preferences.
-  /// "The Daily 12" shows all articles (top 12 by default from backend).
-  /// Any other tab filters by that specific category name.
+  /// "News Feed" shows articles matching the user's preference categories
+  ///   — falls back to ALL articles if no preferences are set or nothing matches.
+  /// "The Daily 12" shows the top 12 articles (already ranked by backend).
+  /// Any other tab filters by that specific category name (case-insensitive).
   List<ApiArticle> _filteredArticles(
     List<ApiArticle> all,
     List<String> userPrefs,
   ) {
+    if (all.isEmpty) return [];
     final cat = _feedCategories[_selectedCategory];
     if (cat == 'The Daily 12') return all.take(12).toList();
     if (cat == 'News Feed') {
-      // Show articles matching any of the user's saved preferences.
+      // Show articles whose category matches any of the user's preferences.
+      // Fall back to all articles if prefs are empty or nothing matches.
       if (userPrefs.isEmpty) return all;
-      return all
+      final matched = all
           .where(
             (a) => userPrefs.any(
               (pref) =>
-                  (a.source ?? '').toLowerCase().contains(pref.toLowerCase()),
+                  (a.category ?? '').trim().toLowerCase() ==
+                  pref.trim().toLowerCase(),
             ),
           )
           .toList();
+      // If prefs don't match any DB categories, show all articles as fallback.
+      return matched.isEmpty ? all : matched;
     }
-    // Specific category tab — filter by source containing cat keyword.
+    // Specific category tab — case-insensitive match on the article's category field.
     return all
         .where(
-          (a) => (a.source ?? '').toLowerCase().contains(cat.toLowerCase()),
+          (a) =>
+              (a.category ?? '').trim().toLowerCase() == cat.trim().toLowerCase(),
         )
         .toList();
   }

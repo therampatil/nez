@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
-/// Side drawer matching the mockup — vertical dark pill with icons.
-/// [currentIndex] maps to: 0=Profile, 1=Insights, 2=Settings, 3=Help, 4=About
-/// [onTap] fires with the tapped index. Index 5 = Logout.
+/// Side drawer — vertical dark pill with icons, always visible on profile tab.
+/// [currentIndex] maps to: 0=Profile, 1=Saved, 2=Settings, 3=Help, 4=About
+/// [onTap] fires with the tapped index.
 class NezSideDrawer extends StatelessWidget {
   const NezSideDrawer({
     super.key,
@@ -40,7 +40,7 @@ class NezSideDrawer extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               _DrawerIcon(
-                assetPath: 'assets/images/clock.png',
+                assetPath: 'assets/images/bookmark.png',
                 isActive: currentIndex == 1,
                 onTap: () => onTap?.call(1),
               ),

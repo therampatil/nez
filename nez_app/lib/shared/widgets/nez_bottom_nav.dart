@@ -31,7 +31,7 @@ class NezBottomNav extends StatelessWidget {
               onTap: () => onTap(0),
             ),
             _NavItem(
-              assetPath: 'assets/images/bookmark.png',
+              assetPath: 'assets/images/clock.png',
               index: 1,
               currentIndex: currentIndex,
               onTap: () => onTap(1),

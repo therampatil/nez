@@ -5,7 +5,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db, get_current_user
-from app.models.article import Article
+from app.models.bookmark import Bookmark
 from app.models.interaction import Interaction
 from app.models.user import User
 from app.models.user_preference import UserPreference
@@ -166,20 +166,20 @@ def get_insights(
         else:
             run = 0
 
-    # ── Category breakdown (join via Article.source as proxy) ─
+    # ── Category breakdown (from denormalised article_category on interactions) ─
     cat_rows = (
-        db.query(Article.source, func.count(Interaction.id).label("cnt"))
-        .join(Article, Article.id == Interaction.article_id)
+        db.query(Interaction.article_category, func.count(Interaction.id).label("cnt"))
         .filter(Interaction.user_id == uid)
         .filter(Interaction.interaction_type.in_(["read", "view"]))
-        .group_by(Article.source)
+        .filter(Interaction.article_category.isnot(None))
+        .group_by(Interaction.article_category)
         .order_by(func.count(Interaction.id).desc())
         .limit(5)
         .all()
     )
     total_cat = sum(r.cnt for r in cat_rows) or 1
     top_categories = [
-        CategoryStat(label=r.source or "Other", count=r.cnt, pct=round(r.cnt / total_cat, 2))
+        CategoryStat(label=r.article_category or "Other", count=r.cnt, pct=round(r.cnt / total_cat, 2))
         for r in cat_rows
     ]
 
@@ -203,7 +203,8 @@ def delete_me(
 ):
     """Permanently delete the authenticated user's account and all associated data."""
     uid = current_user.id
-    # Remove interactions, preferences, then user
+    # Remove bookmarks, interactions, preferences, then user
+    db.query(Bookmark).filter(Bookmark.user_id == uid).delete()
     db.query(Interaction).filter(Interaction.user_id == uid).delete()
     db.query(UserPreference).filter(UserPreference.user_id == uid).delete()
     db.delete(current_user)

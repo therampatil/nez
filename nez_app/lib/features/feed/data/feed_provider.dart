@@ -9,38 +9,37 @@ class ApiArticle {
   const ApiArticle({
     required this.id,
     required this.title,
-    this.description,
-    this.imageUrl,
     this.source,
     this.publishedAt,
-    this.categoryId,
+    this.category,
     this.overview,
-    this.inContext,
-    this.whyItMatters,
+    this.whyThisMatters,
+    this.impact,
   });
 
   final int id;
   final String title;
-  final String? description;
-  final String? imageUrl;
   final String? source;
   final DateTime? publishedAt;
-  final int? categoryId;
 
-  // ── AI-generated 3-section breakdown ──────────────────────────────────
+  /// Category tag — matches values in _feedCategories on HomeScreen
+  /// (e.g. 'Technology', 'Laws', 'Business', etc.)
+  final String? category;
+
+  // ── News article breakdown fields ──────────────────────────
   /// What Happened — plain prose paragraph.
   final String? overview;
 
-  /// In Context — background paragraph.
-  final String? inContext;
+  /// Why This Matters — plain prose paragraph.
+  final String? whyThisMatters;
 
-  /// Why It Matters — newline-separated bullet strings (e.g. "• Foo\n• Bar").
-  final String? whyItMatters;
+  /// Impact / What You Should Know — plain prose paragraph.
+  final String? impact;
 
-  /// Parsed bullet list from [whyItMatters].
+  /// Parsed bullet list from [whyThisMatters].
   List<String> get whyItMattersBullets {
-    if (whyItMatters == null || whyItMatters!.trim().isEmpty) return [];
-    return whyItMatters!
+    if (whyThisMatters == null || whyThisMatters!.trim().isEmpty) return [];
+    return whyThisMatters!
         .split('\n')
         .map((b) => b.replaceFirst(RegExp(r'^[•\-\*]\s*'), '').trim())
         .where((b) => b.isNotEmpty)
@@ -51,33 +50,29 @@ class ApiArticle {
     return ApiArticle(
       id: json['id'] as int,
       title: json['title'] as String,
-      description: json['description'] as String?,
-      imageUrl: (json['image_url'] as String?)?.isNotEmpty == true
-          ? json['image_url'] as String
-          : null,
       source: json['source'] as String?,
-      publishedAt: json['published_at'] != null
-          ? DateTime.tryParse(json['published_at'] as String)
+      publishedAt: json['created_at'] != null
+          ? DateTime.tryParse(json['created_at'] as String)
           : null,
-      categoryId: json['category_id'] as int?,
+      category: json['category'] as String?,
       overview: json['overview'] as String?,
-      inContext: json['in_context'] as String?,
-      whyItMatters: json['why_it_matters'] as String?,
+      whyThisMatters: json['why_this_matters'] as String?,
+      impact: json['impact'] as String?,
     );
   }
 
   /// Convert a static [Article] (mock data) into an [ApiArticle] so
   /// screens that still use the local article list can open ImpactScreen.
   factory ApiArticle.fromArticle(Article local, {int id = 0}) {
-    final impact = local.impact;
+    final imp = local.impact;
     return ApiArticle(
       id: id,
       title: local.headline,
-      description: impact?.whatHappened,
       source: local.source,
-      overview: impact?.whatHappened,
-      inContext: impact?.whatYouShouldKnow,
-      whyItMatters: impact?.whyItMatters.map((b) => '• $b').join('\n'),
+      category: local.category,
+      overview: imp?.whatHappened,
+      whyThisMatters: imp?.whyItMatters.map((b) => '• $b').join('\n'),
+      impact: imp?.whatYouShouldKnow,
     );
   }
 
@@ -96,7 +91,7 @@ class ApiArticle {
 // ──────────────────────────────────────────────
 final feedProvider = FutureProvider.autoDispose<List<ApiArticle>>((ref) async {
   final client = ref.read(apiClientProvider).client;
-  final response = await client.get('/feed/', queryParameters: {'limit': 50});
+  final response = await client.get('/feed/', queryParameters: {'limit': 100});
   final list = response.data['articles'] as List<dynamic>;
   return list
       .map((e) => ApiArticle.fromJson(e as Map<String, dynamic>))

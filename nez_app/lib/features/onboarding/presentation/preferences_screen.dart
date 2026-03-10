@@ -15,19 +15,16 @@ import '../../auth/data/auth_provider.dart';
 // These string values are stored directly in the database.
 // ──────────────────────────────────────────────
 const List<String> kAvailableCategories = [
-  'Career',
-  'Education',
-  'Global',
-  'Money',
+  'Technology',
+  'Business',
   'Laws',
   'Society',
-  'Business',
+  'Global',
+  'Money',
   'Environment',
-  'Technology',
+  'Career',
   'Social',
-  'Finance',
-  'Politics',
-  'Agriculture',
+  'Education',
 ];
 
 // ──────────────────────────────────────────────

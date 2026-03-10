@@ -29,6 +29,37 @@ def run_migrations() -> None:
             "email_verification_token",
             "ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verification_token VARCHAR UNIQUE",
         ),
+        # ── v3: Denormalised article category on interactions ──────────────
+        (
+            "interactions",
+            "article_category",
+            "ALTER TABLE interactions ADD COLUMN IF NOT EXISTS article_category VARCHAR",
+        ),
+        # ── v4: Drop cross-DB FK constraints ──────────────────────────────
+        # Articles now live in a separate news DB, so FKs to articles(id)
+        # in the user DB are invalid and must be removed.
+        (
+            "interactions",
+            "drop_fk_article_id",
+            "ALTER TABLE interactions DROP CONSTRAINT IF EXISTS interactions_article_id_fkey",
+        ),
+        (
+            "bookmarks",
+            "drop_fk_article_id",
+            "ALTER TABLE bookmarks DROP CONSTRAINT IF EXISTS bookmarks_article_id_fkey",
+        ),
+        # ── v5: Drop legacy articles/categories tables from user DB ───────
+        # These tables are no longer used; articles live in the news DB.
+        (
+            "articles",
+            "drop_table",
+            "DROP TABLE IF EXISTS articles CASCADE",
+        ),
+        (
+            "categories",
+            "drop_table",
+            "DROP TABLE IF EXISTS categories CASCADE",
+        ),
     ]
 
     with engine.connect() as conn:

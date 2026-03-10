@@ -1,36 +1,22 @@
+"""Pydantic schemas for news articles (read from the shared news database)."""
+
 from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
 
-class ArticleCreate(BaseModel):
-    title: str
-    description: Optional[str] = None
-    content: Optional[str] = None
-    image_url: Optional[str] = None
-    source: Optional[str] = None
-    published_at: Optional[datetime] = None
-    category_id: Optional[int] = None
-
-
-class ArticleResponse(BaseModel):
+class NewsArticleResponse(BaseModel):
+    """Response schema for a single news article."""
     id: int
     title: str
-    description: Optional[str] = None
-    content: Optional[str] = None
-    image_url: Optional[str] = None
+    url: str
     source: Optional[str] = None
-    published_at: Optional[datetime] = None
-    category_id: Optional[int] = None
-    created_at: datetime
-
-    # ── Pre-analysed intelligence fields (from the news backend) ─────────
     overview: Optional[str] = None
-    in_context: Optional[str] = None
-    why_it_matters: Optional[str] = None
+    why_this_matters: Optional[str] = None
+    impact: Optional[str] = None
     category: Optional[str] = None
-    is_high_quality: Optional[bool] = None
-    is_processed: bool = False
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         from_attributes = True

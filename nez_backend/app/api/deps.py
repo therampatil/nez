@@ -2,7 +2,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 
-from app.core.database import SessionLocal
+from app.core.database import SessionLocal, NewsSessionLocal
 from app.core.security import decode_access_token
 from app.models.user import User
 
@@ -11,8 +11,17 @@ bearer_scheme = HTTPBearer()
 
 
 def get_db():
-    """Dependency that provides a database session per request."""
+    """Dependency that provides a user-database session per request."""
     db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+def get_news_db():
+    """Dependency that provides a news-database session per request (read-only)."""
+    db = NewsSessionLocal()
     try:
         yield db
     finally:

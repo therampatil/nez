@@ -1,8 +1,15 @@
+"""Interaction service — records user interactions and updates preference weights.
+
+Uses two DB sessions:
+  - user_db  for interactions, bookmarks, user_preferences (read/write)
+  - news_db  for looking up the article's category (read-only)
+"""
+
 import logging
 from sqlalchemy.orm import Session
 
 from app.models.interaction import Interaction
-from app.models.article import Article
+from app.models.news_article import NewsArticle
 from app.models.user_preference import UserPreference
 from app.schemas.interaction_schema import InteractionCreate
 from app.core.constants.ranking import (
@@ -29,26 +36,39 @@ INTERACTION_WEIGHTS = {
 }
 
 
-def record_interaction(db: Session, data: InteractionCreate) -> Interaction:
-    """Record an interaction and update user preferences."""
+def record_interaction(
+    *,
+    user_db: Session,
+    news_db: Session,
+    data: InteractionCreate,
+) -> Interaction:
+    """Record an interaction and update user preferences.
+
+    Looks up the article in the news DB to get its category, then stores
+    the interaction (with denormalised category) in the user DB.
+    """
 
     # Skip noise (accidental taps)
     if data.read_time > 0 and data.read_time < MIN_READ_TIME_SECONDS:
-        logger.debug(f"Skipping interaction: read_time {data.read_time}s < threshold")
+        logger.debug("Skipping interaction: read_time %ss < threshold", data.read_time)
 
-    # 1. Save the interaction
+    # 1. Look up the article in the news DB to get its category
+    article = news_db.query(NewsArticle).filter(NewsArticle.id == data.article_id).first()
+    article_category = article.category if article else None
+
+    # 2. Save the interaction in the user DB
     interaction = Interaction(
         user_id=data.user_id,
         article_id=data.article_id,
+        article_category=article_category,
         interaction_type=data.interaction_type,
         read_time=data.read_time,
     )
-    db.add(interaction)
+    user_db.add(interaction)
 
-    # 2. Look up the article to get its source (proxy for category)
-    article = db.query(Article).filter(Article.id == data.article_id).first()
-    if not article or not article.source:
-        db.commit()
+    if not article_category:
+        user_db.commit()
+        user_db.refresh(interaction)
         return interaction
 
     # 3. Calculate weight to add
@@ -59,10 +79,10 @@ def record_interaction(db: Session, data: InteractionCreate) -> Interaction:
 
     # 4. Update or create user preference
     pref = (
-        db.query(UserPreference)
+        user_db.query(UserPreference)
         .filter(
             UserPreference.user_id == data.user_id,
-            UserPreference.source == article.source,
+            UserPreference.source == article_category,
         )
         .first()
     )
@@ -73,26 +93,25 @@ def record_interaction(db: Session, data: InteractionCreate) -> Interaction:
     else:
         pref = UserPreference(
             user_id=data.user_id,
-            source=article.source,
+            source=article_category,
             weight=min(total_weight, CATEGORY_WEIGHT_MAX),
             interaction_count=1,
         )
-        db.add(pref)
+        user_db.add(pref)
 
-    db.commit()
-    db.refresh(interaction)
+    user_db.commit()
+    user_db.refresh(interaction)
 
     logger.info(
-        f"Interaction recorded: user={data.user_id}, article={data.article_id}, "
-        f"type={data.interaction_type}, weight_added={total_weight:.2f}, "
-        f"source={article.source}"
+        "Interaction recorded: user=%s, article=%s, type=%s, weight_added=%.2f, category=%s",
+        data.user_id, data.article_id, data.interaction_type, total_weight, article_category,
     )
 
     return interaction
 
 
 def get_user_preferences(db: Session, user_id: int) -> dict:
-    """Get user's preference weights as a dict: {source: weight}."""
+    """Get user's preference weights as a dict: {category: weight}."""
     prefs = (
         db.query(UserPreference)
         .filter(UserPreference.user_id == user_id)

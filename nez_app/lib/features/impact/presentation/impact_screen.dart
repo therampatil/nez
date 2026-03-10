@@ -46,21 +46,21 @@ class _ImpactScreenState extends ConsumerState<ImpactScreen> {
 
   /// Build an [ArticleImpact] from an [ApiArticle].
   ///
-  /// Prefers real backend AI-generated fields. Falls back gracefully to
-  /// description text when the backend hasn't generated sections yet.
+  /// Maps the news-DB fields:
+  ///   overview         → What Happened
+  ///   impact           → What You Should Know
+  ///   whyThisMatters   → Why It Matters (bullet list)
   ArticleImpact _buildImpact(ApiArticle a) {
     final hasRealData =
         (a.overview?.isNotEmpty == true) ||
-        (a.inContext?.isNotEmpty == true) ||
-        (a.whyItMatters?.isNotEmpty == true);
+        (a.impact?.isNotEmpty == true) ||
+        (a.whyThisMatters?.isNotEmpty == true);
 
     if (hasRealData) {
       return ArticleImpact(
-        whatHappened: a.overview?.isNotEmpty == true
-            ? a.overview!
-            : (a.description ?? a.title),
-        whatYouShouldKnow: a.inContext?.isNotEmpty == true
-            ? a.inContext!
+        whatHappened: a.overview?.isNotEmpty == true ? a.overview! : a.title,
+        whatYouShouldKnow: a.impact?.isNotEmpty == true
+            ? a.impact!
             : 'Stay informed and follow this story for further updates.',
         whyItMatters: a.whyItMattersBullets.isNotEmpty
             ? a.whyItMattersBullets
@@ -68,11 +68,9 @@ class _ImpactScreenState extends ConsumerState<ImpactScreen> {
       );
     }
 
-    // Fallback: synthesise from description when AI sections are missing.
+    // Fallback when no backend content is available yet.
     return ArticleImpact(
-      whatHappened: a.description?.isNotEmpty == true
-          ? a.description!
-          : a.title,
+      whatHappened: a.title,
       whatYouShouldKnow:
           'Stay informed and follow this story for further updates. '
           'More in-depth analysis will be available soon.',

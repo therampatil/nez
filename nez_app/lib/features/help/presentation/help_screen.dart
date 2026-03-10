@@ -7,17 +7,20 @@ import '../../../core/theme/app_theme.dart';
 const _faqAccount = [
   (
     q: 'How do I reset my email?',
-    a: 'Go to Settings → Account Settings → Change Email. Enter your new email address '
+    a:
+        'Go to Settings → Account Settings → Change Email. Enter your new email address '
         'and confirm it. A verification link will be sent to your new address.',
   ),
   (
     q: 'How do I reset my password?',
-    a: 'Go to Settings → Account Settings → Change Password. Enter your current password '
+    a:
+        'Go to Settings → Account Settings → Change Password. Enter your current password '
         'and then type your new password twice to confirm.',
   ),
   (
     q: 'How do I log out of Nez?',
-    a: 'Open the side drawer from the home screen and scroll to the bottom where '
+    a:
+        'Open the side drawer from the home screen and scroll to the bottom where '
         'you\'ll find the "Log Out" option.',
   ),
 ];
@@ -25,17 +28,20 @@ const _faqAccount = [
 const _faqPersonalization = [
   (
     q: 'How do I change my interests?',
-    a: 'Visit your Profile screen and tap "Edit Preferences". You can select or '
+    a:
+        'Visit your Profile screen and tap "Edit Preferences". You can select or '
         'deselect categories to customise your feed at any time.',
   ),
   (
     q: 'How does Nez personalise my news?',
-    a: 'Nez uses the categories you selected during onboarding, combined with your '
+    a:
+        'Nez uses the categories you selected during onboarding, combined with your '
         'reading history and bookmarks, to surface the most relevant stories for you.',
   ),
   (
     q: 'Is my reading data private?',
-    a: 'Yes. Your reading activity is stored locally and is never sold to third parties. '
+    a:
+        'Yes. Your reading activity is stored locally and is never sold to third parties. '
         'See our full Privacy Policy in Settings → Data & Privacy.',
   ),
 ];
