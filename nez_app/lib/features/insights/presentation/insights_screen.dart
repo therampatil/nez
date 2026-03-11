@@ -30,7 +30,7 @@ class InsightsScreen extends ConsumerWidget {
                 ),
                 padding: const EdgeInsets.only(bottom: 48),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 80, right: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

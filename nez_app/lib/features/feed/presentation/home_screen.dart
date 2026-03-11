@@ -15,8 +15,9 @@ import '../../impact/presentation/impact_screen.dart';
 // CATEGORIES
 // ──────────────────────────────────────────────
 const _feedCategories = [
-  'News Feed',
-  'The Daily 12',
+  'Followed News',  // articles matching user's saved preferences
+  'News Feed',      // all articles
+  'The Daily 12',   // top 12 ranked
   'Laws',
   'Business',
   'Technology',
@@ -79,20 +80,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   /// Returns articles filtered by selected category.
-  /// "News Feed" shows articles matching the user's preference categories
-  ///   — falls back to ALL articles if no preferences are set or nothing matches.
-  /// "The Daily 12" shows the top 12 articles (already ranked by backend).
-  /// Any other tab filters by that specific category name (case-insensitive).
+  /// "Followed News" — articles matching the user's saved preferences.
+  ///   Falls back to all articles if no prefs are set or none match.
+  /// "News Feed"   — all articles, ranked by the backend.
+  /// "The Daily 12" — top 12 articles (already ranked by backend).
+  /// Any other tab  — filters by that exact category name (case-insensitive).
   List<ApiArticle> _filteredArticles(
     List<ApiArticle> all,
     List<String> userPrefs,
   ) {
     if (all.isEmpty) return [];
     final cat = _feedCategories[_selectedCategory];
-    if (cat == 'The Daily 12') return all.take(12).toList();
-    if (cat == 'News Feed') {
-      // Show articles whose category matches any of the user's preferences.
-      // Fall back to all articles if prefs are empty or nothing matches.
+
+    if (cat == 'Followed News') {
       if (userPrefs.isEmpty) return all;
       final matched = all
           .where(
@@ -103,14 +103,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           )
           .toList();
-      // If prefs don't match any DB categories, show all articles as fallback.
       return matched.isEmpty ? all : matched;
     }
-    // Specific category tab — case-insensitive match on the article's category field.
+
+    if (cat == 'News Feed') return all;
+
+    if (cat == 'The Daily 12') return all.take(12).toList();
+
+    // Specific category tab — case-insensitive match.
     return all
         .where(
           (a) =>
-              (a.category ?? '').trim().toLowerCase() == cat.trim().toLowerCase(),
+              (a.category ?? '').trim().toLowerCase() ==
+              cat.trim().toLowerCase(),
         )
         .toList();
   }
@@ -358,7 +363,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ? _EmptyFeedState(
                                     category:
                                         _feedCategories[_selectedCategory],
-                                    onBrowseAll: () => _onCategoryTap(0),
+                                    onBrowseAll: () => _onCategoryTap(1),
                                   )
                                 : Row(
                                     crossAxisAlignment:
@@ -510,7 +515,7 @@ class _EmptyFeedState extends StatelessWidget {
                       borderRadius: BorderRadius.zero,
                     ),
                     child: Text(
-                      'Browse News Feed',
+                      'Browse All News',
                       style: AppTextStyles.labelMedium.copyWith(fontSize: 14),
                     ),
                   ),
