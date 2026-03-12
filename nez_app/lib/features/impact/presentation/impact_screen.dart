@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/providers/bookmarks_provider.dart';
 import '../../../core/providers/shell_tab_provider.dart';
 import '../../../shared/widgets/nez_bottom_nav.dart';
+import '../../../shared/services/interaction_service.dart';
 import '../../feed/data/article_model.dart';
 import '../../feed/data/feed_provider.dart';
 
@@ -29,6 +31,7 @@ class ImpactScreen extends ConsumerStatefulWidget {
 class _ImpactScreenState extends ConsumerState<ImpactScreen> {
   late final PageController _pageController;
   int _currentPage = 0;
+  final _openedAt = DateTime.now();
 
   static const _panelCount = 3;
 
@@ -36,11 +39,22 @@ class _ImpactScreenState extends ConsumerState<ImpactScreen> {
   void initState() {
     super.initState();
     _pageController = PageController(viewportFraction: 0.88);
+    // Record "view" when the article detail screen opens
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(interactionServiceProvider)
+          .recordView(widget.article.id);
+    });
   }
 
   @override
   void dispose() {
     _pageController.dispose();
+    // Record "read" with actual time spent when the user leaves
+    final seconds = DateTime.now().difference(_openedAt).inSeconds.toDouble();
+    ref
+        .read(interactionServiceProvider)
+        .recordRead(widget.article.id, readTimeSeconds: seconds);
     super.dispose();
   }
 
@@ -133,15 +147,23 @@ class _ImpactScreenState extends ConsumerState<ImpactScreen> {
                   // Send / share
                   _ImpactIconButton(
                     assetPath: 'assets/images/share.png',
-                    onTap: () {},
+                    onTap: () {
+                      final deepLink = 'nez://article/${widget.article.id}';
+                      final shareText =
+                          '${widget.article.title}\n\nRead this on Nez 👇\n$deepLink';
+                      Share.share(shareText, subject: widget.article.title);
+                      ref
+                          .read(interactionServiceProvider)
+                          .recordShare(widget.article.id);
+                    },
                   ),
                   const SizedBox(width: 10),
                   // Bookmark
                   _ImpactBookmarkButton(
                     isBookmarked: isBookmarked,
                     onTap: () => ref
-                        .read(bookmarksProvider.notifier)
-                        .toggle(widget.article.id),
+                        .read(bookmarkedArticlesProvider.notifier)
+                        .toggle(widget.article),
                   ),
                   const Spacer(),
                   // Follow News →

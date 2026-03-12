@@ -15,9 +15,9 @@ import '../../impact/presentation/impact_screen.dart';
 // CATEGORIES
 // ──────────────────────────────────────────────
 const _feedCategories = [
-  'Followed News',  // articles matching user's saved preferences
-  'News Feed',      // all articles
-  'The Daily 12',   // top 12 ranked
+  'Followed News', // articles matching user's saved preferences
+  'News Feed', // all articles
+  'The Daily 12', // top 12 ranked
   'Laws',
   'Business',
   'Technology',
@@ -130,6 +130,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final bookmarked = ref.watch(bookmarksProvider);
     final unreadCount = ref.watch(unreadCountProvider);
     final feedAsync = ref.watch(feedProvider);
+    // Ensure bookmarks are loaded from backend
+    ref.watch(bookmarkedArticlesProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -433,9 +435,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                               ),
                                               onBookmarkTap: () => ref
                                                   .read(
-                                                    bookmarksProvider.notifier,
+                                                    bookmarkedArticlesProvider.notifier,
                                                   )
-                                                  .toggle(filtered[index].id),
+                                                  .toggle(filtered[index]),
                                               articleIndex: index,
                                               total: filtered.length,
                                             );

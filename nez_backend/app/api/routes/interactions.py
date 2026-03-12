@@ -17,6 +17,15 @@ def create_interaction(
     current_user: User = Depends(get_current_user),
 ):
     """Record a user interaction (view, read, like, share, bookmark).
-    Requires a valid Bearer JWT. Updates user preferences for personalised feed ranking.
+    Requires a valid Bearer JWT. The user_id is always taken from the JWT —
+    any user_id in the request body is ignored for security.
+    Updates user preferences for personalised feed ranking.
     """
+    # Always use the authenticated user's id — never trust the client's user_id
+    data = InteractionCreate(
+        user_id=current_user.id,
+        article_id=data.article_id,
+        interaction_type=data.interaction_type,
+        read_time=data.read_time,
+    )
     return record_interaction(user_db=user_db, news_db=news_db, data=data)

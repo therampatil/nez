@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import func
@@ -7,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_db, get_current_user
 from app.models.bookmark import Bookmark
 from app.models.interaction import Interaction
+from app.models.news_article import NewsArticle
 from app.models.user import User
 from app.models.user_preference import UserPreference
 from app.schemas.user_schema import (
@@ -17,7 +19,9 @@ from app.schemas.user_schema import (
     InsightsResponse,
     CategoryStat,
 )
+from app.schemas.article_schema import NewsArticleResponse
 from app.core.constants.ranking import CATEGORY_WEIGHT_MAX
+from app.core.database import NewsSessionLocal
 
 router = APIRouter()
 
@@ -194,6 +198,78 @@ def get_insights(
         streak_grid=streak_grid,
         top_categories=top_categories,
     )
+
+
+# ── Bookmarks ────────────────────────────────────────────────────────────────
+
+@router.get("/me/bookmarks", response_model=List[NewsArticleResponse])
+def list_bookmarks(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Return all bookmarked articles for the authenticated user (full article objects)."""
+    rows = (
+        db.query(Bookmark)
+        .filter(Bookmark.user_id == current_user.id)
+        .order_by(Bookmark.created_at.desc())
+        .all()
+    )
+    if not rows:
+        return []
+
+    article_ids = [r.article_id for r in rows]
+
+    # Look up full article objects in the news DB
+    news_db = NewsSessionLocal()
+    try:
+        articles = (
+            news_db.query(NewsArticle)
+            .filter(NewsArticle.id.in_(article_ids))
+            .all()
+        )
+        # Preserve bookmark order (most recently bookmarked first)
+        order_map = {aid: i for i, aid in enumerate(article_ids)}
+        articles.sort(key=lambda a: order_map.get(a.id, 9999))
+        return articles
+    finally:
+        news_db.close()
+
+
+@router.post("/me/bookmarks/{article_id}", status_code=status.HTTP_201_CREATED)
+def add_bookmark(
+    article_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Bookmark an article. Idempotent — returns 201 whether or not it already existed."""
+    existing = (
+        db.query(Bookmark)
+        .filter(
+            Bookmark.user_id == current_user.id,
+            Bookmark.article_id == article_id,
+        )
+        .first()
+    )
+    if not existing:
+        bookmark = Bookmark(user_id=current_user.id, article_id=article_id)
+        db.add(bookmark)
+        db.commit()
+    return {"detail": "bookmarked", "article_id": article_id}
+
+
+@router.delete("/me/bookmarks/{article_id}", status_code=status.HTTP_200_OK)
+def remove_bookmark(
+    article_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Remove a bookmark. Idempotent — 200 even if it didn't exist."""
+    db.query(Bookmark).filter(
+        Bookmark.user_id == current_user.id,
+        Bookmark.article_id == article_id,
+    ).delete()
+    db.commit()
+    return {"detail": "removed", "article_id": article_id}
 
 
 @router.delete("/me", status_code=status.HTTP_200_OK)
