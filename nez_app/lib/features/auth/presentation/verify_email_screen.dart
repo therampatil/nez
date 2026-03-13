@@ -149,7 +149,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen>
                           ),
                           boxShadow: const [
                             BoxShadow(
-                              color: Color(0xFF000000),
+                              color: AppColors.background,
                               offset: Offset(4, 4),
                               blurRadius: 0,
                             ),
@@ -281,7 +281,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen>
                                   ),
                                   boxShadow: const [
                                     BoxShadow(
-                                      color: Color(0xFF000000),
+                                      color: AppColors.background,
                                       offset: Offset(3, 3),
                                       blurRadius: 0,
                                     ),

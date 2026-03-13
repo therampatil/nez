@@ -205,7 +205,7 @@ class _CategoryChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected ? AppColors.chipSelected : AppColors.chipUnselected,
           border: Border.all(color: AppColors.border, width: 1.5),
-          borderRadius: BorderRadius.zero,
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           label,

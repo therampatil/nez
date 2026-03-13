@@ -241,13 +241,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                             child: Container(
                                               padding: const EdgeInsets.all(12),
                                               decoration: BoxDecoration(
-                                                color: const Color(0xFFFFF3CD),
+                                                color: const Color(0xFF2A1F0F),
                                                 border: Border.all(
-                                                  color: const Color(
-                                                    0xFFE6A817,
-                                                  ),
+                                                  color: AppColors.warning,
                                                   width: 1.5,
                                                 ),
+                                                borderRadius: BorderRadius.circular(16),
                                               ),
                                               child: Column(
                                                 crossAxisAlignment:
@@ -258,9 +257,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                                     style: AppTextStyles
                                                         .labelSmall
                                                         .copyWith(
-                                                          color: const Color(
-                                                            0xFF7B5200,
-                                                          ),
+                                                          color: AppColors.warning,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                         ),
@@ -271,9 +268,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                                     style: AppTextStyles
                                                         .bodySmall
                                                         .copyWith(
-                                                          color: const Color(
-                                                            0xFF7B5200,
-                                                          ),
+                                                          color: AppColors.textSecondary,
                                                           fontSize: 12,
                                                           height: 1.4,
                                                         ),
@@ -286,9 +281,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                                           Icons
                                                               .check_circle_outline,
                                                           size: 14,
-                                                          color: Color(
-                                                            0xFF2E7D32,
-                                                          ),
+                                                          color: AppColors.success,
                                                         ),
                                                         const SizedBox(
                                                           width: 4,
@@ -298,10 +291,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                                           style: AppTextStyles
                                                               .bodySmall
                                                               .copyWith(
-                                                                color:
-                                                                    const Color(
-                                                                      0xFF2E7D32,
-                                                                    ),
+                                                                color: AppColors.success,
                                                                 fontSize: 12,
                                                               ),
                                                         ),
@@ -320,25 +310,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                                                   CircularProgressIndicator(
                                                                     strokeWidth:
                                                                         2,
-                                                                    color: Color(
-                                                                      0xFF7B5200,
-                                                                    ),
+                                                                    color: AppColors.warning,
                                                                   ),
                                                             )
                                                           : Text(
                                                               'Resend verification email →',
                                                               style: AppTextStyles.labelSmall.copyWith(
-                                                                color:
-                                                                    const Color(
-                                                                      0xFF7B5200,
-                                                                    ),
+                                                                color: AppColors.warning,
                                                                 decoration:
                                                                     TextDecoration
                                                                         .underline,
-                                                                decorationColor:
-                                                                    const Color(
-                                                                      0xFF7B5200,
-                                                                    ),
+                                                                decorationColor: AppColors.warning,
                                                                 fontSize: 12,
                                                               ),
                                                             ),
@@ -415,6 +397,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                       color: AppColors.border,
                                       width: 1.5,
                                     ),
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: RichText(
                                     text: TextSpan(
@@ -498,12 +481,6 @@ class _SocialRow extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _SocialButton(
-          child: Image.asset(
-            'assets/images/googleicon.png',
-            width: 24,
-            height: 24,
-            fit: BoxFit.contain,
-          ),
           onTap: isLoading
               ? null
               : () {
@@ -517,6 +494,12 @@ class _SocialRow extends ConsumerWidget {
                     }
                   });
                 },
+          child: Image.asset(
+            'assets/images/googleicon.png',
+            width: 24,
+            height: 24,
+            fit: BoxFit.contain,
+          ),
         ),
         const SizedBox(width: 16),
         _SocialButton(
@@ -558,11 +541,12 @@ class _SocialButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.card,
           border: Border.all(color: AppColors.border, width: 1.5),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: const [
             BoxShadow(
-              color: Color(0xFF000000),
-              offset: Offset(4, 4),
-              blurRadius: 0,
+              color: AppColors.shadowMedium,
+              offset: Offset(0, 4),
+              blurRadius: 12,
             ),
           ],
         ),

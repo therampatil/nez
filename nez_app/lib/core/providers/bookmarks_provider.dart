@@ -12,9 +12,10 @@ import '../../shared/services/interaction_service.dart';
 /// The list of bookmarked articles loaded from the backend.
 /// Separate from feedProvider so we don't rely on the feed being loaded.
 final bookmarkedArticlesProvider =
-    StateNotifierProvider<BookmarkedArticlesNotifier, AsyncValue<List<ApiArticle>>>(
-  (ref) => BookmarkedArticlesNotifier(ref),
-);
+    StateNotifierProvider<
+      BookmarkedArticlesNotifier,
+      AsyncValue<List<ApiArticle>>
+    >((ref) => BookmarkedArticlesNotifier(ref));
 
 class BookmarkedArticlesNotifier
     extends StateNotifier<AsyncValue<List<ApiArticle>>> {
@@ -49,7 +50,9 @@ class BookmarkedArticlesNotifier
 
     if (isBookmarked) {
       // Optimistic remove
-      state = AsyncValue.data(current.where((a) => a.id != article.id).toList());
+      state = AsyncValue.data(
+        current.where((a) => a.id != article.id).toList(),
+      );
       try {
         await client.delete('/users/me/bookmarks/${article.id}');
       } catch (e) {
@@ -66,7 +69,9 @@ class BookmarkedArticlesNotifier
       } catch (e) {
         debugPrint('[BookmarkedArticlesNotifier] add error: $e');
         // Revert on failure
-        state = AsyncValue.data(current.where((a) => a.id != article.id).toList());
+        state = AsyncValue.data(
+          current.where((a) => a.id != article.id).toList(),
+        );
       }
     }
   }
@@ -79,8 +84,9 @@ class BookmarkedArticlesNotifier
 // Kept so existing screens that watch bookmarksProvider<Set<int>> still compile.
 // They will be migrated to bookmarkedArticlesProvider progressively.
 
-final bookmarksProvider =
-    StateNotifierProvider<BookmarksNotifier, Set<int>>((ref) {
+final bookmarksProvider = StateNotifierProvider<BookmarksNotifier, Set<int>>((
+  ref,
+) {
   // Mirror the bookmarkedArticlesProvider into a Set<int> automatically.
   final notifier = BookmarksNotifier();
   ref.listen(bookmarkedArticlesProvider, (_, next) {

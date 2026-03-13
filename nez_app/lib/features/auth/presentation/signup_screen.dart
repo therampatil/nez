@@ -482,12 +482,6 @@ class _SocialRow extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _SocialButton(
-          child: Image.asset(
-            'assets/images/googleicon.png',
-            width: 24,
-            height: 24,
-            fit: BoxFit.contain,
-          ),
           onTap: isLoading
               ? null
               : () {
@@ -500,6 +494,12 @@ class _SocialRow extends ConsumerWidget {
                     }
                   });
                 },
+          child: Image.asset(
+            'assets/images/googleicon.png',
+            width: 24,
+            height: 24,
+            fit: BoxFit.contain,
+          ),
         ),
         const SizedBox(width: 16),
         _SocialButton(
@@ -543,7 +543,7 @@ class _SocialButton extends StatelessWidget {
           border: Border.all(color: AppColors.border, width: 1.5),
           boxShadow: const [
             BoxShadow(
-              color: Color(0xFF000000),
+              color: AppColors.background,
               offset: Offset(4, 4),
               blurRadius: 0,
             ),

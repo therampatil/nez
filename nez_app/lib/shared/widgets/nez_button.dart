@@ -52,8 +52,8 @@ class NezButton extends StatelessWidget {
               foregroundColor: AppColors.accentText,
               disabledBackgroundColor: AppColors.disabled,
               elevation: 0,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
             child: child,
@@ -69,8 +69,8 @@ class NezButton extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.textPrimary,
               side: const BorderSide(color: AppColors.border, width: 1.5),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
             child: Text(

@@ -342,7 +342,7 @@ class _NotificationIcon extends StatelessWidget {
       decoration: BoxDecoration(
         color: isRead ? AppColors.background : AppColors.textPrimary,
         border: Border.all(color: AppColors.border, width: 1.5),
-        borderRadius: BorderRadius.zero,
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Center(
         child: Image.asset(

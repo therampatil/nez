@@ -41,9 +41,7 @@ class _ImpactScreenState extends ConsumerState<ImpactScreen> {
     _pageController = PageController(viewportFraction: 0.88);
     // Record "view" when the article detail screen opens
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref
-          .read(interactionServiceProvider)
-          .recordView(widget.article.id);
+      ref.read(interactionServiceProvider).recordView(widget.article.id);
     });
   }
 
@@ -353,11 +351,12 @@ class _ImpactCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.card,
           border: Border.all(color: AppColors.border, width: 1.5),
-          boxShadow: const [
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
             BoxShadow(
-              color: Color(0xFF000000),
-              offset: Offset(8, 8),
-              blurRadius: 0,
+              color: AppColors.shadowMedium,
+              offset: Offset(0, 4),
+              blurRadius: 12,
             ),
           ],
         ),

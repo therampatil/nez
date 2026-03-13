@@ -241,14 +241,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ? AppColors.textPrimary
                             : AppColors.card,
                         border: Border.all(color: AppColors.border, width: 1.5),
-                        borderRadius: BorderRadius.zero,
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         _feedCategories[index],
                         style: AppTextStyles.labelMedium.copyWith(
                           color: isSelected
-                              ? Colors.white
+                              ? AppColors.background
                               : AppColors.textPrimary,
                           fontSize: 14,
                         ),
@@ -329,6 +329,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       color: AppColors.border,
                                       width: 1.5,
                                     ),
+                                    borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: Row(
                                     children: [
@@ -435,7 +436,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                               ),
                                               onBookmarkTap: () => ref
                                                   .read(
-                                                    bookmarkedArticlesProvider.notifier,
+                                                    bookmarkedArticlesProvider
+                                                        .notifier,
                                                   )
                                                   .toggle(filtered[index]),
                                               articleIndex: index,
@@ -514,7 +516,7 @@ class _EmptyFeedState extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       border: Border.all(color: AppColors.border, width: 1.5),
-                      borderRadius: BorderRadius.zero,
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       'Browse All News',
@@ -554,7 +556,9 @@ class _ArticlePage extends StatelessWidget {
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: AppColors.card,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
       builder: (_) => SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -584,8 +588,8 @@ class _ArticlePage extends StatelessWidget {
                     ),
                     backgroundColor: AppColors.textPrimary,
                     behavior: SnackBarBehavior.floating,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     duration: const Duration(seconds: 2),
                   ),
@@ -605,8 +609,8 @@ class _ArticlePage extends StatelessWidget {
                     ),
                     backgroundColor: AppColors.textPrimary,
                     behavior: SnackBarBehavior.floating,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     duration: const Duration(seconds: 2),
                   ),
@@ -744,12 +748,12 @@ class _ArticlePage extends StatelessWidget {
                           vertical: 10,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.textPrimary,
+                          color: AppColors.accent,
                           border: Border.all(
-                            color: AppColors.textPrimary,
+                            color: AppColors.accent,
                             width: 1.5,
                           ),
-                          borderRadius: BorderRadius.zero,
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -863,9 +867,9 @@ class _BookmarkButton extends StatelessWidget {
         width: 42,
         height: 42,
         decoration: BoxDecoration(
-          color: isBookmarked ? AppColors.textPrimary : Colors.transparent,
+          color: isBookmarked ? AppColors.accent : Colors.transparent,
           border: Border.all(color: AppColors.border, width: 1.5),
-          borderRadius: BorderRadius.zero,
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
           child: Image.asset(
@@ -900,7 +904,7 @@ class _ActionIconButton extends StatelessWidget {
         height: 42,
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.border, width: 1.5),
-          borderRadius: BorderRadius.zero,
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
           child: Image.asset(

@@ -56,16 +56,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(path: '/welcome', builder: (_, __) => const WelcomeScreen()),
-      GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
-      GoRoute(path: '/signup', builder: (_, __) => const SignupScreen()),
+      GoRoute(path: '/welcome', builder: (_, _) => const WelcomeScreen()),
+      GoRoute(path: '/login', builder: (_, _) => const LoginScreen()),
+      GoRoute(path: '/signup', builder: (_, _) => const SignupScreen()),
       GoRoute(
         path: '/verify-email',
-        builder: (_, __) => const VerifyEmailScreen(),
+        builder: (_, _) => const VerifyEmailScreen(),
       ),
       GoRoute(
         path: '/preferences',
-        builder: (_, __) => const PreferencesScreen(),
+        builder: (_, _) => const PreferencesScreen(),
       ),
       GoRoute(
         path: '/article/:id',
@@ -74,7 +74,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           return ArticleDeepLinkPage(articleId: id ?? '0');
         },
       ),
-      GoRoute(path: '/home', builder: (_, __) => const MainShell()),
+      GoRoute(path: '/home', builder: (_, _) => const MainShell()),
     ],
   );
 });
@@ -94,7 +94,7 @@ class ArticleDeepLinkPage extends ConsumerWidget {
     return feedAsync.when(
       loading: () =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (_, __) => Scaffold(
+      error: (_, _) => Scaffold(
         body: Center(
           child: Text(
             'Could not load article.',

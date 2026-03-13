@@ -189,8 +189,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: AppColors.card,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(0)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       builder: (ctx) {
         return StatefulBuilder(
@@ -372,7 +372,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         content: Text(message, style: AppTextStyles.bodySmall),
         backgroundColor: AppColors.textPrimary,
         behavior: SnackBarBehavior.floating,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -578,7 +578,7 @@ class _NezDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: AppColors.card,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       insetPadding: const EdgeInsets.symmetric(horizontal: 28, vertical: 40),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),

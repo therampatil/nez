@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
-/// White card with hard black drop-shadow — the signature Nez depth effect.
+/// Enhanced card with subtle shadows and rounded corners
 class NezCard extends StatelessWidget {
   const NezCard({
     super.key,
@@ -12,6 +12,7 @@ class NezCard extends StatelessWidget {
     this.onTap,
     this.border,
     this.shadow = true,
+    this.borderRadius = 24.0,
   });
 
   final Widget child;
@@ -21,6 +22,7 @@ class NezCard extends StatelessWidget {
   final VoidCallback? onTap;
   final bool shadow;
   final Border? border;
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +30,13 @@ class NezCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: margin,
-        padding: padding ?? const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-        clipBehavior: Clip.none,
+        padding:
+            padding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: color ?? AppColors.card,
-          borderRadius: BorderRadius.zero,
-          border: border ?? Border.all(color: AppColors.border, width: 1.5),
+          borderRadius: BorderRadius.circular(borderRadius),
+          border: border ?? Border.all(color: AppColors.border, width: 1),
           boxShadow: shadow ? AppShadows.card : null,
         ),
         child: child,

@@ -25,11 +25,7 @@ class InteractionService {
   /// Record a "read" interaction with the time spent (seconds).
   /// Called when the user leaves the article detail page.
   Future<void> recordRead(int articleId, {double readTimeSeconds = 0.0}) async {
-    await _post(
-      articleId: articleId,
-      type: 'read',
-      readTime: readTimeSeconds,
-    );
+    await _post(articleId: articleId, type: 'read', readTime: readTimeSeconds);
   }
 
   /// Record a "bookmark" interaction.
@@ -58,7 +54,9 @@ class InteractionService {
       );
     } catch (e) {
       // Non-critical — never crash the UI over tracking failures.
-      debugPrint('[InteractionService] Failed to record $type for $articleId: $e');
+      debugPrint(
+        '[InteractionService] Failed to record $type for $articleId: $e',
+      );
     }
   }
 }

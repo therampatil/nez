@@ -199,11 +199,12 @@ class _SearchBar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.card,
                 border: Border.all(color: AppColors.border, width: 1.5),
-                boxShadow: const [
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
                   BoxShadow(
-                    color: Color(0xFF000000),
-                    offset: Offset(4, 4),
-                    blurRadius: 0,
+                    color: AppColors.shadowLight,
+                    offset: Offset(0, 2),
+                    blurRadius: 8,
                   ),
                 ],
               ),
@@ -429,11 +430,12 @@ class _SearchResultCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.card,
           border: Border.all(color: AppColors.border, width: 1.5),
-          boxShadow: const [
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
             BoxShadow(
-              color: Color(0xFF000000),
-              offset: Offset(6, 6),
-              blurRadius: 0,
+              color: AppColors.shadowMedium,
+              offset: Offset(0, 4),
+              blurRadius: 12,
             ),
           ],
         ),
@@ -500,9 +502,10 @@ class _SearchResultCard extends StatelessWidget {
                 height: 36,
                 decoration: BoxDecoration(
                   color: isBookmarked
-                      ? AppColors.textPrimary
+                      ? AppColors.accent
                       : Colors.transparent,
                   border: Border.all(color: AppColors.border, width: 1.5),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
                   child: Image.asset(
@@ -596,11 +599,12 @@ class _TopicChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.card,
           border: Border.all(color: AppColors.border, width: 1.5),
-          boxShadow: const [
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
             BoxShadow(
-              color: Color(0xFF000000),
-              offset: Offset(3, 3),
-              blurRadius: 0,
+              color: AppColors.shadowLight,
+              offset: Offset(0, 2),
+              blurRadius: 8,
             ),
           ],
         ),

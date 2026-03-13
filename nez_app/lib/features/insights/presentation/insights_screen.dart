@@ -203,11 +203,12 @@ class _StatCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.card,
         border: Border.all(color: AppColors.border, width: 1.5),
-        boxShadow: const [
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
           BoxShadow(
-            color: Color(0xFF000000),
-            offset: Offset(5, 5),
-            blurRadius: 0,
+            color: AppColors.shadowMedium,
+            offset: Offset(0, 4),
+            blurRadius: 12,
           ),
         ],
       ),
@@ -250,11 +251,12 @@ class _SectionCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.card,
         border: Border.all(color: AppColors.border, width: 1.5),
-        boxShadow: const [
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
           BoxShadow(
-            color: Color(0xFF000000),
-            offset: Offset(6, 6),
-            blurRadius: 0,
+            color: AppColors.shadowMedium,
+            offset: Offset(0, 4),
+            blurRadius: 16,
           ),
         ],
       ),

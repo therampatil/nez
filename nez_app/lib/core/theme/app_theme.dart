@@ -2,40 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // ──────────────────────────────────────────────
-// COLORS
+// COLORS - Enhanced Dark Theme
 // ──────────────────────────────────────────────
 abstract final class AppColors {
-  // Backgrounds
-  static const Color background = Color(0xFFE8E8E8); // light grey canvas
-  static const Color card = Color(0xFFFFFFFF); // pure white card
-  static const Color cardShadow = Color(0xFF000000); // hard drop shadow
+  // Backgrounds (deep blacks with subtle variations)
+  static const Color background = Color(0xFF0A0A0A); // slightly lighter than pure black
+  static const Color backgroundElevated = Color(0xFF121212); // elevated surface
+  static const Color card = Color(0xFF1C1C1C); // refined dark card surface
+  static const Color cardHover = Color(0xFF242424); // card hover state
+  
+  // Text (white hierarchy)
+  static const Color textPrimary = Color(0xFFF5F5F5); // soft white for reduced eye strain
+  static const Color textSecondary = Color(0xFFB3B3B3); // medium grey
+  static const Color textTertiary = Color(0xFF737373); // subtle grey
+  static const Color textHint = Color(0xFF525252); // muted grey
 
-  // Text
-  static const Color textPrimary = Color(0xFF111111);
-  static const Color textSecondary = Color(0xFF555555);
-  static const Color textHint = Color(0xFF999999);
-
-  // Accent (CTA button)
-  static const Color accent = Color(0xFF1C2B28); // dark muted green
+  // Accent (minimal red - refined)
+  static const Color accent = Color(0xFFEF4444); // refined red for CTAs
+  static const Color accentHover = Color(0xFFF87171); // lighter on hover
+  static const Color accentSubtle = Color(0xFF991B1B); // darker variant
   static const Color accentText = Color(0xFFFFFFFF);
 
-  // Borders & dividers
-  static const Color border = Color(0xFF111111);
-  static const Color inputUnderline = Color(0xFF111111);
-  static const Color divider = Color(0xFFDDDDDD);
+  // Borders & dividers (subtle greys)
+  static const Color border = Color(0xFF2A2A2A); // refined subtle border
+  static const Color borderLight = Color(0xFF3A3A3A); // lighter variant
+  static const Color divider = Color(0xFF242424); // subtle divider
+  static const Color inputBorder = Color(0xFF3A3A3A); // input borders
 
-  // Category chip selected
-  static const Color chipSelected = Color(0xFF3A3A3A);
-  static const Color chipUnselected = Color(0xFFFFFFFF);
+  // Category chips
+  static const Color chipSelected = Color(0xFF2A2A2A); // selected state
+  static const Color chipUnselected = Color(0xFF151515); // unselected
+  static const Color chipBorder = Color(0xFF3A3A3A); // chip border
 
   // States
-  static const Color error = Color(0xFFD32F2F);
-  static const Color disabled = Color(0xFFAAAAAA);
+  static const Color error = Color(0xFFEF4444); // red error
+  static const Color success = Color(0xFF10B981); // green success
+  static const Color warning = Color(0xFFF59E0B); // amber warning
+  static const Color disabled = Color(0xFF404040); // disabled state
+  
+  // Shadows (refined for depth)
+  static const Color shadowLight = Color(0x14000000); // subtle shadow
+  static const Color shadowMedium = Color(0x28000000); // medium shadow
+  static const Color shadowStrong = Color(0x40000000); // strong shadow
 
-  // Keep these for legacy compat across existing widget files
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceLight = Color(0xFFF5F5F5);
-  static const Color accentMuted = Color(0xFF3A3A3A);
+  // Legacy compat
+  static const Color surface = Color(0xFF1C1C1C);
+  static const Color surfaceLight = Color(0xFF242424);
+  static const Color accentMuted = Color(0xFF2A2A2A);
+  static const Color inputUnderline = Color(0xFF3A3A3A);
+  static const Color cardShadow = Color(0x28000000);
 }
 
 // ──────────────────────────────────────────────
@@ -124,16 +139,47 @@ abstract final class AppTextStyles {
 }
 
 // ──────────────────────────────────────────────
-// SHADOWS — hard offset (as in mockup)
+// SHADOWS - Subtle depth for dark theme
 // ──────────────────────────────────────────────
 abstract final class AppShadows {
-  // The signature layered card effect from the mockup
+  // Subtle card elevation
   static const List<BoxShadow> card = [
-    BoxShadow(color: Color(0xFF000000), offset: Offset(10, 10), blurRadius: 0),
+    BoxShadow(
+      color: AppColors.shadowMedium,
+      offset: Offset(0, 4),
+      blurRadius: 16,
+      spreadRadius: 0,
+    ),
   ];
 
+  // Medium elevation for floating elements
   static const List<BoxShadow> elevated = [
-    BoxShadow(color: Color(0x33000000), blurRadius: 16, offset: Offset(0, 6)),
+    BoxShadow(
+      color: AppColors.shadowMedium,
+      offset: Offset(0, 8),
+      blurRadius: 24,
+      spreadRadius: 0,
+    ),
+  ];
+
+  // Strong shadow for modals and dialogs
+  static const List<BoxShadow> modal = [
+    BoxShadow(
+      color: AppColors.shadowStrong,
+      offset: Offset(0, 16),
+      blurRadius: 48,
+      spreadRadius: 0,
+    ),
+  ];
+
+  // Subtle inner shadow effect
+  static const List<BoxShadow> inner = [
+    BoxShadow(
+      color: AppColors.shadowLight,
+      offset: Offset(0, 2),
+      blurRadius: 8,
+      spreadRadius: -2,
+    ),
   ];
 }
 
@@ -142,9 +188,10 @@ abstract final class AppShadows {
 // ──────────────────────────────────────────────
 final ThemeData appTheme = ThemeData(
   useMaterial3: true,
+  brightness: Brightness.dark,
   scaffoldBackgroundColor: AppColors.background,
   fontFamily: 'Inter',
-  colorScheme: const ColorScheme.light(
+  colorScheme: ColorScheme.dark(
     primary: AppColors.accent,
     onPrimary: AppColors.accentText,
     surface: AppColors.card,
@@ -163,14 +210,13 @@ final ThemeData appTheme = ThemeData(
     labelSmall: AppTextStyles.labelSmall,
   ),
   dividerColor: AppColors.divider,
-  // Underline input style — matches mockup
-  inputDecorationTheme: const InputDecorationTheme(
+  inputDecorationTheme: InputDecorationTheme(
     filled: false,
-    contentPadding: EdgeInsets.symmetric(vertical: 10),
+    contentPadding: const EdgeInsets.symmetric(vertical: 10),
     hintStyle: TextStyle(
       fontSize: 13,
       fontWeight: FontWeight.w400,
-      color: AppColors.textPrimary,
+      color: AppColors.textHint,
     ),
     labelStyle: TextStyle(
       fontSize: 13,
@@ -184,7 +230,7 @@ final ThemeData appTheme = ThemeData(
       borderSide: BorderSide(color: AppColors.inputUnderline, width: 1),
     ),
     focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: AppColors.textPrimary, width: 1.5),
+      borderSide: BorderSide(color: AppColors.accent, width: 1.5),
     ),
     errorBorder: UnderlineInputBorder(
       borderSide: BorderSide(color: AppColors.error, width: 1),
@@ -195,14 +241,62 @@ final ThemeData appTheme = ThemeData(
       backgroundColor: AppColors.accent,
       foregroundColor: AppColors.accentText,
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-      padding: const EdgeInsets.symmetric(vertical: 18),
-      textStyle: const TextStyle(
-        fontFamily: 'Inter',
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-        letterSpacing: 0.3,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+      textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
     ),
   ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: AppColors.textPrimary,
+      side: const BorderSide(color: AppColors.border, width: 1.5),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: AppColors.textSecondary,
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+    ),
+  ),
+  cardTheme: const CardTheme(
+    color: AppColors.card,
+    elevation: 0,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(24))),
+    margin: EdgeInsets.all(0),
+  ),
+  chipTheme: const ChipThemeData(
+    backgroundColor: AppColors.chipUnselected,
+    selectedColor: AppColors.chipSelected,
+    disabledColor: AppColors.disabled,
+    side: BorderSide(color: AppColors.chipBorder, width: 1),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+    labelStyle: TextStyle(color: AppColors.textPrimary),
+    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+  ),
+  dialogTheme: const DialogTheme(
+    backgroundColor: AppColors.card,
+    elevation: 0,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(28))),
+  ),
+  bottomSheetTheme: const BottomSheetThemeData(
+    backgroundColor: AppColors.card,
+    elevation: 0,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+    ),
+  ),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: AppColors.background,
+    elevation: 0,
+    centerTitle: false,
+    iconTheme: IconThemeData(color: AppColors.textPrimary),
+    titleTextStyle: TextStyle(
+      color: AppColors.textPrimary,
+      fontSize: 20,
+      fontWeight: FontWeight.w700,
+    ),
+  ),
+  // Card styling handled by custom NezCard to ensure consistent shadow/corner treatment
 );

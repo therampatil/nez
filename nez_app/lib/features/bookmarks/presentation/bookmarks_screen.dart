@@ -29,8 +29,10 @@ class BookmarksScreen extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Failed to load bookmarks',
-                        style: AppTextStyles.bodyMedium),
+                    Text(
+                      'Failed to load bookmarks',
+                      style: AppTextStyles.bodyMedium,
+                    ),
                     const SizedBox(height: 12),
                     TextButton(
                       onPressed: () =>
@@ -59,8 +61,10 @@ class BookmarksScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 4),
-                            Text('Bookmarks',
-                                style: AppTextStyles.displayMedium),
+                            Text(
+                              'Bookmarks',
+                              style: AppTextStyles.displayMedium,
+                            ),
                             SizedBox(height: constraints.maxHeight * 0.22),
                             Center(
                               child: Column(
@@ -69,8 +73,9 @@ class BookmarksScreen extends ConsumerWidget {
                                   Icon(
                                     Icons.bookmark_outline_rounded,
                                     size: 64,
-                                    color: AppColors.textSecondary
-                                        .withValues(alpha: 0.4),
+                                    color: AppColors.textSecondary.withValues(
+                                      alpha: 0.4,
+                                    ),
                                   ),
                                   const SizedBox(height: 16),
                                   Text(
@@ -102,7 +107,11 @@ class BookmarksScreen extends ConsumerWidget {
                     // ── Header row ──
                     Padding(
                       padding: const EdgeInsets.fromLTRB(
-                          _kDrawerOffset, 24, 24, 4),
+                        _kDrawerOffset,
+                        24,
+                        24,
+                        4,
+                      ),
                       child: Row(
                         children: [
                           Expanded(
@@ -159,8 +168,7 @@ class BookmarksScreen extends ConsumerWidget {
                           bottom: 32,
                         ),
                         itemCount: saved.length,
-                        separatorBuilder: (_, __) =>
-                            const SizedBox(height: 16),
+                        separatorBuilder: (_, _) => const SizedBox(height: 16),
                         itemBuilder: (context, i) {
                           final article = saved[i];
                           return _BookmarkedCard(
@@ -172,7 +180,9 @@ class BookmarksScreen extends ConsumerWidget {
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => ImpactScreen(
-                                    article: article, articleIndex: i),
+                                  article: article,
+                                  articleIndex: i,
+                                ),
                               ),
                             ),
                           );
@@ -219,10 +229,10 @@ class _BookmarkedCard extends StatelessWidget {
             // ── Category chip ──
             if (article.category != null) ...[
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
                   border: Border.all(color: AppColors.border, width: 1),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   article.category!.toUpperCase(),
@@ -306,8 +316,9 @@ class _BookmarkedCard extends StatelessWidget {
                     width: 42,
                     height: 42,
                     decoration: BoxDecoration(
-                      color: AppColors.textPrimary,
+                      color: AppColors.accent,
                       border: Border.all(color: AppColors.border, width: 1.5),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
                       child: Image.asset(
@@ -325,13 +336,16 @@ class _BookmarkedCard extends StatelessWidget {
                   onTap: onTap,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 10),
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
                     decoration: BoxDecoration(
-                      color: AppColors.textPrimary,
+                      color: AppColors.accent,
                       border: Border.all(
-                        color: AppColors.textPrimary,
+                        color: AppColors.accent,
                         width: 1.5,
                       ),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -381,6 +395,7 @@ class _IconButton extends StatelessWidget {
         height: 42,
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.border, width: 1.5),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
           child: Image.asset(

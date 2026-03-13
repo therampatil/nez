@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_theme.dart';
 
 /// Bottom navigation bar matching the mockup — dark pill-shaped bar with icons.
 class NezBottomNav extends StatelessWidget {
@@ -18,8 +19,16 @@ class NezBottomNav extends StatelessWidget {
       child: Container(
         height: 64,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 27, 26, 26),
-          borderRadius: BorderRadius.circular(120),
+          color: AppColors.card,
+          borderRadius: BorderRadius.circular(32),
+          border: Border.all(color: AppColors.border, width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.shadowMedium,
+              offset: Offset(0, 8),
+              blurRadius: 24,
+            ),
+          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

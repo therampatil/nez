@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
-/// Minimal underline text field — matches mockup exactly.
-/// Label sits above, thin bottom border only, no box.
+/// Minimal text field with rounded corners — matches enhanced dark theme
 class NezTextField extends StatefulWidget {
   const NezTextField({
     super.key,
@@ -33,6 +32,7 @@ class NezTextField extends StatefulWidget {
 
 class _NezTextFieldState extends State<NezTextField> {
   late bool _obscured;
+  bool _isFocused = false;
 
   @override
   void initState() {
@@ -46,46 +46,68 @@ class _NezTextFieldState extends State<NezTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Label
         Text(
           widget.hint,
           style: const TextStyle(
             fontFamily: 'Inter',
             fontSize: 13,
             fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+            color: AppColors.textSecondary,
           ),
         ),
-        TextFormField(
-          controller: widget.controller,
-          obscureText: _obscured,
-          keyboardType: widget.keyboardType,
-          textInputAction: widget.textInputAction,
-          onChanged: widget.onChanged,
-          validator: widget.validator,
-          autofillHints: widget.autofillHints,
-          style: const TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            color: AppColors.textPrimary,
-          ),
-          cursorColor: AppColors.accent,
-          decoration: InputDecoration(
-            hintText: null,
-            isDense: true,
-            suffixIcon: widget.obscureText
-                ? GestureDetector(
-                    onTap: () => setState(() => _obscured = !_obscured),
-                    child: Icon(
-                      _obscured
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                      color: AppColors.textHint,
-                      size: 18,
-                    ),
-                  )
-                : null,
+        const SizedBox(height: 8),
+        Focus(
+          onFocusChange: (focused) => setState(() => _isFocused = focused),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.card,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: _isFocused ? AppColors.accent : AppColors.border,
+                width: 1.5,
+              ),
+            ),
+            child: TextFormField(
+              controller: widget.controller,
+              obscureText: _obscured,
+              keyboardType: widget.keyboardType,
+              textInputAction: widget.textInputAction,
+              onChanged: widget.onChanged,
+              validator: widget.validator,
+              autofillHints: widget.autofillHints,
+              style: const TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: AppColors.textPrimary,
+              ),
+              cursorColor: AppColors.accent,
+              decoration: InputDecoration(
+                hintText: null,
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                focusedErrorBorder: InputBorder.none,
+                suffixIcon: widget.obscureText
+                    ? GestureDetector(
+                        onTap: () => setState(() => _obscured = !_obscured),
+                        child: Icon(
+                          _obscured
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          color: AppColors.textTertiary,
+                          size: 20,
+                        ),
+                      )
+                    : null,
+              ),
+            ),
           ),
         ),
       ],

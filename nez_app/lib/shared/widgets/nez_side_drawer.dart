@@ -19,16 +19,18 @@ class NezSideDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: 12,
+      left: 16,
       top: 0,
       bottom: 0,
       child: Center(
         child: Container(
-          width: 52,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          width: 56,
+          padding: const EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
-            color: AppColors.textPrimary,
-            borderRadius: BorderRadius.circular(100),
+            color: AppColors.card,
+            borderRadius: BorderRadius.circular(32),
+            border: Border.all(color: AppColors.border, width: 1),
+            boxShadow: AppShadows.elevated,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -38,31 +40,31 @@ class NezSideDrawer extends StatelessWidget {
                 isActive: currentIndex == 0,
                 onTap: () => onTap?.call(0),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               _DrawerIcon(
                 assetPath: 'assets/images/bookmark.png',
                 isActive: currentIndex == 1,
                 onTap: () => onTap?.call(1),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               _DrawerIcon(
                 assetPath: 'assets/images/setting (1).png',
                 isActive: currentIndex == 2,
                 onTap: () => onTap?.call(2),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               _DrawerIcon(
                 assetPath: 'assets/images/help-web-button.png',
                 isActive: currentIndex == 3,
                 onTap: () => onTap?.call(3),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               _DrawerIcon(
                 assetPath: 'assets/images/information-button.png',
                 isActive: currentIndex == 4,
                 onTap: () => onTap?.call(4),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               _DrawerIcon(icon: Icons.logout, isActive: false, onTap: onLogout),
             ],
           ),
@@ -90,22 +92,25 @@ class _DrawerIcon extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: SizedBox(
-        width: 40,
-        height: 40,
+      child: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: isActive ? AppColors.accent.withValues(alpha: 0.2) : Colors.transparent,
+          borderRadius: BorderRadius.circular(14),
+        ),
         child: Center(
           child: assetPath != null
               ? Image.asset(
                   assetPath!,
                   width: 22,
                   height: 22,
-                  color: Colors.white,
+                  color: isActive ? AppColors.accent : AppColors.textTertiary,
                   fit: BoxFit.contain,
-                  opacity: AlwaysStoppedAnimation(isActive ? 1.0 : 0.5),
                 )
               : Icon(
                   icon,
-                  color: Colors.white.withValues(alpha: isActive ? 1.0 : 0.5),
+                  color: isActive ? AppColors.accent : AppColors.textTertiary,
                   size: 22,
                 ),
         ),

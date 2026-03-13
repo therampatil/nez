@@ -75,7 +75,7 @@ class ProfileScreen extends ConsumerWidget {
                             onTap: () => _showPickAvatar(context, ref),
                             child: Stack(
                               children: [
-                                Container(
+                                SizedBox(
                                   width: 60,
                                   height: 60,
                                   child: Image.asset(
@@ -185,7 +185,7 @@ class ProfileScreen extends ConsumerWidget {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           ),
                         ),
-                        error: (_, __) => Text(
+                        error: (_, _) => Text(
                           'Could not load preferences',
                           style: AppTextStyles.bodySmall.copyWith(
                             color: AppColors.textSecondary,
@@ -223,7 +223,7 @@ class ProfileScreen extends ConsumerWidget {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           ),
                         ),
-                        error: (_, __) => Text(
+                        error: (_, _) => Text(
                           "You're building a consistent reading habit.",
                           style: AppTextStyles.bodySmall.copyWith(
                             color: AppColors.textSecondary,
@@ -251,7 +251,7 @@ class ProfileScreen extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.background,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       builder: (_) => _EditUsernameSheet(current: current, ref: ref),
     );
   }
@@ -262,7 +262,7 @@ class ProfileScreen extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.background,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       builder: (_) => _PickAvatarSheet(ref: ref),
     );
   }
@@ -277,7 +277,7 @@ class ProfileScreen extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.background,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       builder: (_) => _EditPreferencesSheet(current: current, ref: ref),
     );
   }
@@ -482,7 +482,7 @@ class _PickAvatarSheetState extends State<_PickAvatarSheet> {
                 foregroundColor: AppColors.background,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 elevation: 0,
               ),
@@ -598,21 +598,21 @@ class _EditUsernameSheetState extends State<_EditUsernameSheet> {
               filled: true,
               fillColor: AppColors.card,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.zero,
+                borderRadius: BorderRadius.circular(16),
                 borderSide: const BorderSide(
                   color: AppColors.border,
                   width: 1.5,
                 ),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.zero,
+                borderRadius: BorderRadius.circular(16),
                 borderSide: const BorderSide(
                   color: AppColors.border,
                   width: 1.5,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.zero,
+                borderRadius: BorderRadius.circular(16),
                 borderSide: const BorderSide(
                   color: AppColors.textPrimary,
                   width: 1.5,
@@ -634,7 +634,7 @@ class _EditUsernameSheetState extends State<_EditUsernameSheet> {
                 foregroundColor: AppColors.background,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 elevation: 0,
               ),
@@ -751,7 +751,7 @@ class _EditPreferencesSheetState extends State<_EditPreferencesSheet> {
                         ? AppColors.chipSelected
                         : AppColors.chipUnselected,
                     border: Border.all(color: AppColors.border, width: 1.5),
-                    borderRadius: BorderRadius.zero,
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Text(
                     cat,
@@ -773,7 +773,7 @@ class _EditPreferencesSheetState extends State<_EditPreferencesSheet> {
                 foregroundColor: AppColors.background,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 elevation: 0,
               ),
@@ -815,7 +815,7 @@ class _PreferenceChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.chipSelected,
         border: Border.all(color: AppColors.border, width: 1.5),
-        borderRadius: BorderRadius.zero,
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Text(
         label,

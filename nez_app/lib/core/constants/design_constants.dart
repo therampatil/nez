@@ -17,12 +17,14 @@ abstract final class DesignConstants {
     vertical: 16,
   );
 
-  // ── Border radius ──
-  static const double radiusSM = 8;
-  static const double radiusMD = 14;
-  static const double radiusLG = 20;
+  // ── Border radius - Enhanced rounded corners ──
+  static const double radiusXS = 12;
+  static const double radiusSM = 16;
+  static const double radiusMD = 20;
+  static const double radiusLG = 24;
   static const double radiusXL = 28;
-  static const double radiusFull = 100;
+  static const double radiusXXL = 32;
+  static const double radiusFull = 999;
 
   // ── Button ──
   static const double buttonHeight = 56;
