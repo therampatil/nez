@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 from typing import Optional, List
 
@@ -12,19 +12,20 @@ class FollowStoryCreate(BaseModel):
 
 class FollowStoryResponse(BaseModel):
     """Response after following a story."""
+    model_config = ConfigDict(from_attributes=True)
+    
     id: int
     user_id: int
     original_article_id: int
     story_key: str
     story_title: str
     created_at: datetime
-    
-    class Config:
-        from_attributes = True
 
 
 class FollowedStoryWithUpdates(BaseModel):
     """A followed story with its updates."""
+    model_config = ConfigDict(from_attributes=True)
+    
     id: int
     original_article_id: int
     story_key: str
@@ -35,9 +36,6 @@ class FollowedStoryWithUpdates(BaseModel):
     # List of new article IDs that are updates to this story
     updates: List[int]
     unread_count: int  # Number of updates since last_checked_at
-    
-    class Config:
-        from_attributes = True
 
 
 class UnfollowStoryRequest(BaseModel):
