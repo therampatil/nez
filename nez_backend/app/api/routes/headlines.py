@@ -11,7 +11,7 @@ from app.schemas.headline_schema import NewsHeadlineResponse
 router = APIRouter()
 
 
-@router.get("/", response_model=List[NewsHeadlineResponse])
+@router.get("/", response_model=List[NewsHeadlineResponse], response_model_exclude_none=False)
 def list_headlines(
     skip: int = Query(0, ge=0),
     limit: int = Query(20, ge=1, le=100),
@@ -43,7 +43,7 @@ def list_headlines(
     )
 
 
-@router.get("/latest/", response_model=List[NewsHeadlineResponse])
+@router.get("/latest/", response_model=List[NewsHeadlineResponse], response_model_exclude_none=False)
 def get_latest_headlines(
     limit: int = Query(10, ge=1, le=50),
     db: Session = Depends(get_news_db),
@@ -65,7 +65,7 @@ def get_latest_headlines(
     )
 
 
-@router.get("/{headline_id}", response_model=NewsHeadlineResponse)
+@router.get("/{headline_id}", response_model=NewsHeadlineResponse, response_model_exclude_none=False)
 def read_headline(headline_id: int, db: Session = Depends(get_news_db)):
     """Return a single headline by ID.
     

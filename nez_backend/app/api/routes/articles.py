@@ -11,7 +11,7 @@ from app.schemas.article_schema import NewsArticleResponse
 router = APIRouter()
 
 
-@router.get("/", response_model=List[NewsArticleResponse])
+@router.get("/", response_model=List[NewsArticleResponse], response_model_exclude_none=False)
 def list_articles(
     skip: int = 0,
     limit: int = 20,
@@ -27,7 +27,7 @@ def list_articles(
     )
 
 
-@router.get("/{article_id}", response_model=NewsArticleResponse)
+@router.get("/{article_id}", response_model=NewsArticleResponse, response_model_exclude_none=False)
 def read_article(article_id: int, db: Session = Depends(get_news_db)):
     """Return a single article by ID."""
     article = db.query(NewsArticle).filter(NewsArticle.id == article_id).first()
