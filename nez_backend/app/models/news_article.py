@@ -16,6 +16,7 @@ class NewsArticle(NewsBase):
     title = Column(Text, nullable=False)
     url = Column(Text, nullable=False)
     source = Column(Text, nullable=True)
+    image_url = Column(Text, nullable=True)
     overview = Column(Text, nullable=True)
     why_this_matters = Column(Text, nullable=True)
     impact = Column(Text, nullable=True)

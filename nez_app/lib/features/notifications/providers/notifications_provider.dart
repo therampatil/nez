@@ -28,6 +28,13 @@ class NotificationsNotifier extends Notifier<List<NezNotification>> {
     ];
   }
 
+  void deleteByArticleIndex(int articleIndex) {
+    state = [
+      for (final n in state)
+        if (n.articleIndex != articleIndex) n,
+    ];
+  }
+
   void clearAll() {
     state = [];
   }

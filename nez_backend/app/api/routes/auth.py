@@ -2,6 +2,8 @@
 verify-email, resend-verification."""
 
 import secrets
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
@@ -9,6 +11,7 @@ from pydantic import BaseModel, EmailStr
 import httpx
 
 from app.api.deps import get_db, get_current_user
+from app.core.config import settings
 from app.core.security import hash_password, verify_password, create_access_token
 from app.models.user import User
 from app.schemas.auth_schema import UserSignup, UserLogin, TokenResponse
@@ -49,10 +52,16 @@ class SignupResponse(BaseModel):
 
 async def verify_google_token(id_token: str) -> dict:
     """Verify Google ID token using Google's tokeninfo endpoint."""
-    async with httpx.AsyncClient() as client:
-        response = await client.get(
-            "https://oauth2.googleapis.com/tokeninfo",
-            params={"id_token": id_token},
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(
+                "https://oauth2.googleapis.com/tokeninfo",
+                params={"id_token": id_token},
+            )
+    except httpx.HTTPError:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Google token verification service unavailable.",
         )
 
     if response.status_code != 200:
@@ -73,6 +82,46 @@ async def verify_google_token(id_token: str) -> dict:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Google account email is not verified.",
+        )
+
+    issuer = token_data.get("iss")
+    if issuer not in {"accounts.google.com", "https://accounts.google.com"}:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Google token issuer.",
+        )
+
+    allowed_client_ids = {
+        cid.strip()
+        for cid in settings.GOOGLE_CLIENT_IDS.split(",")
+        if cid.strip()
+    }
+    if not allowed_client_ids:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Google sign-in is not configured on the server.",
+        )
+
+    audience = token_data.get("aud", "")
+    if audience not in allowed_client_ids:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Google token audience mismatch.",
+        )
+
+    exp_value = token_data.get("exp")
+    try:
+        exp_ts = int(exp_value)
+    except (TypeError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Google token expiry.",
+        )
+
+    if exp_ts <= int(datetime.now(timezone.utc).timestamp()):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Google token has expired.",
         )
 
     return token_data
@@ -327,6 +376,13 @@ async def google_sign_in(payload: GoogleSignInPayload, db: Session = Depends(get
     token_data = await verify_google_token(payload.id_token)
 
     email = token_data.get("email", "").lower().strip()
+    payload_email = payload.email.lower().strip()
+    if payload_email and payload_email != email:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Google account email mismatch.",
+        )
+
     name = token_data.get("name", "") or payload.name or email.split("@")[0]
 
     if not email:

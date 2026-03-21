@@ -33,6 +33,7 @@ Nez/
 
 - **Welcome → Login / Signup → Email Verification → Preferences → Home** onboarding flow
 - Personalised article feed (JWT-authenticated, ranked by recency + user preferences)
+- **Follow News** - Track specific news stories and get updates automatically
 - "See the Impact" three-panel deep-dive per article
 - Bookmarks, search, notifications, reading insights & streak grid
 - Google Sign-In (Android + iOS)
@@ -74,26 +75,33 @@ Cross-database foreign keys are not used; article IDs are stored as plain intege
 
 ### API Endpoints
 
-| Method   | Path                        | Auth | Description                 |
-| -------- | --------------------------- | ---- | --------------------------- |
-| `GET`    | `/`                         | —    | Health check                |
-| `POST`   | `/auth/signup`              | —    | Register new user           |
-| `POST`   | `/auth/login`               | —    | Login, returns JWT          |
-| `GET`    | `/auth/verify-email`        | —    | Verify email via token link |
-| `POST`   | `/auth/resend-verification` | —    | Resend verification email   |
-| `POST`   | `/auth/google`              | —    | Google Sign-In              |
-| `POST`   | `/auth/change-password`     | JWT  | Change password             |
-| `POST`   | `/auth/change-email`        | JWT  | Change email                |
-| `GET`    | `/users/me`                 | JWT  | Get profile                 |
-| `PATCH`  | `/users/me`                 | JWT  | Update display name         |
-| `GET`    | `/users/me/preferences`     | JWT  | Get category preferences    |
-| `PUT`    | `/users/me/preferences`     | JWT  | Save category preferences   |
-| `GET`    | `/users/me/insights`        | JWT  | Reading stats & streak      |
-| `DELETE` | `/users/me`                 | JWT  | Delete account              |
-| `GET`    | `/feed/`                    | JWT  | Personalised news feed      |
-| `GET`    | `/articles/`                | —    | List articles (paginated)   |
-| `GET`    | `/articles/{id}`            | —    | Get single article          |
-| `POST`   | `/interactions/`            | JWT  | Record user interaction     |
+| Method   | Path                                    | Auth | Description                      |
+| -------- | --------------------------------------- | ---- | -------------------------------- |
+| `GET`    | `/`                                     | —    | Health check                     |
+| `POST`   | `/auth/signup`                          | —    | Register new user                |
+| `POST`   | `/auth/login`                           | —    | Login, returns JWT               |
+| `GET`    | `/auth/verify-email`                    | —    | Verify email via token link      |
+| `POST`   | `/auth/resend-verification`             | —    | Resend verification email        |
+| `POST`   | `/auth/google`                          | —    | Google Sign-In                   |
+| `POST`   | `/auth/change-password`                 | JWT  | Change password                  |
+| `POST`   | `/auth/change-email`                    | JWT  | Change email                     |
+| `GET`    | `/users/me`                             | JWT  | Get profile                      |
+| `PATCH`  | `/users/me`                             | JWT  | Update display name              |
+| `GET`    | `/users/me/preferences`                 | JWT  | Get category preferences         |
+| `PUT`    | `/users/me/preferences`                 | JWT  | Save category preferences        |
+| `GET`    | `/users/me/insights`                    | JWT  | Reading stats & streak           |
+| `DELETE` | `/users/me`                             | JWT  | Delete account                   |
+| `GET`    | `/feed/`                                | JWT  | Personalised news feed           |
+| `GET`    | `/articles/`                            | —    | List articles (paginated)        |
+| `GET`    | `/articles/{id}`                        | —    | Get single article               |
+| `POST`   | `/interactions/`                        | JWT  | Record user interaction          |
+| `POST`   | `/followed-stories/`                    | JWT  | Follow a news story              |
+| `DELETE` | `/followed-stories/{story_id}`          | JWT  | Unfollow a story                 |
+| `GET`    | `/followed-stories/`                    | JWT  | List followed stories + updates  |
+| `GET`    | `/followed-stories/feed`                | JWT  | Feed of followed story updates   |
+| `POST`   | `/followed-stories/{story_id}/mark-read`| JWT  | Mark story as checked            |
+| `GET`    | `/followed-stories/check/{story_key}`   | JWT  | Check if following a story       |
+| `POST`   | `/admin/detect-updates`                 | —    | Trigger story update detection   |
 
 ### Running Locally
 

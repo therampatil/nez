@@ -6,7 +6,7 @@ class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
   Future<void> _launchEmail() async {
-    final uri = Uri(scheme: 'mailto', path: 'naz@gmail.com');
+    final uri = Uri(scheme: 'mailto', path: 'support@nez.app');
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     }
@@ -42,11 +42,11 @@ class AboutScreen extends StatelessWidget {
 
                       SizedBox(height: constraints.maxHeight * 0.08),
 
-                      // ── About Naz ──
-                      Text('About Naz', style: AppTextStyles.headlineLarge),
+                      // ── About Nez ──
+                      Text('About Nez', style: AppTextStyles.headlineLarge),
                       const SizedBox(height: 12),
                       Text(
-                        'Naz is a personalized news app built for focused minds.\n\n'
+                        'Nez is a personalized news app built for focused minds.\n\n'
                         'We filter trusted sources into clear, concise updates tailored to your interests.\n\n'
                         'Our mission is simple — remove the noise and surface what truly matters.',
                         style: AppTextStyles.bodyMedium.copyWith(
@@ -75,7 +75,7 @@ class AboutScreen extends StatelessWidget {
                             child: GestureDetector(
                               onTap: _launchEmail,
                               child: Text(
-                                'naz@gmail.com',
+                                'support@nez.app',
                                 style: AppTextStyles.bodyLarge.copyWith(
                                   color: AppColors.textPrimary,
                                   decoration: TextDecoration.underline,
@@ -99,7 +99,7 @@ class AboutScreen extends StatelessWidget {
                           ),
                           Expanded(
                             child: Text(
-                              'theNaz',
+                              '@nez.app',
                               style: AppTextStyles.bodyLarge.copyWith(
                                 color: AppColors.textPrimary,
                               ),
@@ -114,7 +114,7 @@ class AboutScreen extends StatelessWidget {
                       // ── Version ──
                       Center(
                         child: Text(
-                          'App Version 1.0.0 © 2026 Naz',
+                          'App Version 1.0.0 © 2026 Nez',
                           style: AppTextStyles.bodySmall.copyWith(
                             color: AppColors.textSecondary,
                           ),

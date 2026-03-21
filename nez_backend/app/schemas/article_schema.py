@@ -11,6 +11,7 @@ class NewsArticleResponse(BaseModel):
     title: str
     url: str
     source: Optional[str] = None
+    image_url: Optional[str] = None
     overview: Optional[str] = None
     why_this_matters: Optional[str] = None
     impact: Optional[str] = None

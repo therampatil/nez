@@ -170,12 +170,20 @@ class _NotificationCard extends StatelessWidget {
         constraints: const BoxConstraints(maxWidth: 420),
         child: GestureDetector(
           onTap: onTap,
-          child: NezCard(
-            padding: const EdgeInsets.all(16),
-            color: item.isRead ? AppColors.card : const Color(0xFFF5F5F5),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          child: Container(
+            decoration: BoxDecoration(
+              border: item.isRead ? null : Border.all(
+                color: Colors.white,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: NezCard(
+              padding: const EdgeInsets.all(16),
+              color: item.isRead ? AppColors.card : AppColors.cardHover,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 // ── Icon container ──
                 _NotificationIcon(type: item.type, isRead: item.isRead),
 
@@ -265,6 +273,7 @@ class _NotificationCard extends StatelessWidget {
                             const Spacer(),
                             Row(
                               mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
                                   'Read story',
@@ -272,12 +281,13 @@ class _NotificationCard extends StatelessWidget {
                                     fontSize: 11,
                                     color: AppColors.textPrimary,
                                     fontWeight: FontWeight.w700,
+                                    height: 1.0,
                                   ),
                                 ),
-                                const SizedBox(width: 3),
-                                const Icon(
+                                const SizedBox(width: 4),
+                                Icon(
                                   Icons.arrow_forward,
-                                  size: 11,
+                                  size: 12,
                                   color: AppColors.textPrimary,
                                 ),
                               ],
@@ -308,6 +318,7 @@ class _NotificationCard extends StatelessWidget {
               ],
             ),
           ),
+          ),
         ),
       ),
     );
@@ -326,7 +337,7 @@ class _NotificationIcon extends StatelessWidget {
   String get _assetPath {
     switch (type) {
       case NotificationType.ai:
-        return 'assets/images/ai.png';
+        return 'assets/images/generative.png';
       case NotificationType.finance:
         return 'assets/images/rupee-indian.png';
       default:

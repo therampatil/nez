@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dio/dio.dart';
 
 import '../../features/feed/data/feed_provider.dart';
 import '../../shared/services/api_client.dart';
+import '../../shared/services/api_routes.dart';
 import '../../shared/services/interaction_service.dart';
 
 // ──────────────────────────────────────────────
@@ -29,13 +31,18 @@ class BookmarkedArticlesNotifier
     state = const AsyncValue.loading();
     try {
       final client = _ref.read(apiClientProvider).client;
-      final response = await client.get('/users/me/bookmarks');
+      final response = await client.get(ApiRoutes.userBookmarks);
       final list = response.data as List<dynamic>;
       final articles = list
           .map((e) => ApiArticle.fromJson(e as Map<String, dynamic>))
           .toList();
       state = AsyncValue.data(articles);
     } catch (e, st) {
+      if (e is DioException && e.response?.statusCode == 404) {
+        // Old backend deployment may miss bookmarks routes; treat as empty.
+        state = const AsyncValue.data([]);
+        return;
+      }
       debugPrint('[BookmarkedArticlesNotifier] load error: $e');
       state = AsyncValue.error(e, st);
     }
@@ -54,7 +61,7 @@ class BookmarkedArticlesNotifier
         current.where((a) => a.id != article.id).toList(),
       );
       try {
-        await client.delete('/users/me/bookmarks/${article.id}');
+        await client.delete(ApiRoutes.userBookmarkById(article.id));
       } catch (e) {
         debugPrint('[BookmarkedArticlesNotifier] remove error: $e');
         // Revert on failure
@@ -64,7 +71,7 @@ class BookmarkedArticlesNotifier
       // Optimistic add
       state = AsyncValue.data([article, ...current]);
       try {
-        await client.post('/users/me/bookmarks/${article.id}');
+        await client.post(ApiRoutes.userBookmarkById(article.id));
         await interactionSvc.recordBookmark(article.id);
       } catch (e) {
         debugPrint('[BookmarkedArticlesNotifier] add error: $e');

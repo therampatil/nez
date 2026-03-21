@@ -5,6 +5,9 @@ class Settings(BaseSettings):
     DATABASE_URL: str          # User DB (auth, preferences, interactions)
     NEWS_DATABASE_URL: str     # News DB (pre-analysed articles — read-only)
     SECRET_KEY: str
+    # Comma-separated Google OAuth client IDs allowed to mint ID tokens.
+    # Example: "web-client-id.apps.googleusercontent.com,android-client-id.apps.googleusercontent.com"
+    GOOGLE_CLIENT_IDS: str = ""
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 

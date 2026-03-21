@@ -82,6 +82,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                   if (err != null) {
                     setDialogState(() => errorMsg = err);
                   } else {
+                    if (!ctx.mounted) return;
                     Navigator.of(ctx).pop();
                     _showConfirmSnack('Email updated successfully.');
                   }
@@ -166,6 +167,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                   if (err != null) {
                     setDialogState(() => errorMsg = err);
                   } else {
+                    if (!ctx.mounted) return;
                     Navigator.of(ctx).pop();
                     _showConfirmSnack('Password updated successfully.');
                   }
@@ -281,6 +283,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                   if (err != null) {
                     setDialogState(() => errorMsg = err);
                   } else {
+                    if (!ctx.mounted) return;
                     Navigator.of(ctx).pop();
                     // authProvider state is already reset; router redirects to login
                   }

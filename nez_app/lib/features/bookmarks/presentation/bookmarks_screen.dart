@@ -226,20 +226,20 @@ class _BookmarkedCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ── Category chip ──
+            // ── Category hashtag ──
             if (article.category != null) ...[
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.border, width: 1),
+                  color: AppColors.textPrimary.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  article.category!.toUpperCase(),
+                  '#${article.category}',
                   style: AppTextStyles.labelSmall.copyWith(
-                    fontSize: 10,
-                    letterSpacing: 0.8,
-                    color: AppColors.textSecondary,
+                    fontSize: 11,
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),

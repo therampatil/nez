@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
 /// Side drawer — vertical dark pill with icons, always visible on profile tab.
-/// [currentIndex] maps to: 0=Profile, 1=Saved, 2=Settings, 3=Help, 4=About
+/// [currentIndex] maps to: 0=Profile, 1=Insights, 2=Saved, 3=Settings, 4=Help, 5=About
 /// [onTap] fires with the tapped index.
 class NezSideDrawer extends StatelessWidget {
   const NezSideDrawer({
@@ -42,27 +42,33 @@ class NezSideDrawer extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               _DrawerIcon(
-                assetPath: 'assets/images/bookmark.png',
+                icon: Icons.insights_rounded,
                 isActive: currentIndex == 1,
                 onTap: () => onTap?.call(1),
               ),
               const SizedBox(height: 24),
               _DrawerIcon(
-                assetPath: 'assets/images/setting (1).png',
+                assetPath: 'assets/images/bookmark.png',
                 isActive: currentIndex == 2,
                 onTap: () => onTap?.call(2),
               ),
               const SizedBox(height: 24),
               _DrawerIcon(
-                assetPath: 'assets/images/help-web-button.png',
+                assetPath: 'assets/images/setting (1).png',
                 isActive: currentIndex == 3,
                 onTap: () => onTap?.call(3),
               ),
               const SizedBox(height: 24),
               _DrawerIcon(
-                assetPath: 'assets/images/information-button.png',
+                assetPath: 'assets/images/help-web-button.png',
                 isActive: currentIndex == 4,
                 onTap: () => onTap?.call(4),
+              ),
+              const SizedBox(height: 24),
+              _DrawerIcon(
+                assetPath: 'assets/images/information-button.png',
+                isActive: currentIndex == 5,
+                onTap: () => onTap?.call(5),
               ),
               const SizedBox(height: 24),
               _DrawerIcon(icon: Icons.logout, isActive: false, onTap: onLogout),

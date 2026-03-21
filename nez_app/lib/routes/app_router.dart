@@ -89,6 +89,7 @@ class ArticleDeepLinkPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final feedAsync = ref.watch(feedProvider);
+    final headlinesAsync = ref.watch(headlinesProvider);
     final parsedId = int.tryParse(articleId) ?? 0;
 
     return feedAsync.when(
@@ -102,21 +103,45 @@ class ArticleDeepLinkPage extends ConsumerWidget {
           ),
         ),
       ),
-      data: (articles) {
-        final idx = articles.indexWhere((a) => a.id == parsedId);
-        if (idx == -1) {
+      data: (articles) => headlinesAsync.when(
+        loading: () =>
+            const Scaffold(body: Center(child: CircularProgressIndicator())),
+        error: (_, _) => Scaffold(
+          body: Center(
+            child: Text(
+              'Could not load article.',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+        ),
+        data: (headlineArticles) {
+          final feedIdx = articles.indexWhere((a) => a.id == parsedId);
+          if (feedIdx != -1) {
+            return ImpactScreen(
+              article: articles[feedIdx],
+              articleIndex: feedIdx,
+            );
+          }
+
+          final headlineIdx =
+              headlineArticles.indexWhere((a) => a.id == parsedId);
+          if (headlineIdx != -1) {
+            return ImpactScreen(
+              article: headlineArticles[headlineIdx],
+              articleIndex: headlineIdx,
+            );
+          }
+
           return Scaffold(
             body: Center(
               child: Text(
-                'Article not available in feed.',
+                'Article not available in feed or headlines.',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
           );
-        }
-        // Found — show ImpactScreen directly.
-        return ImpactScreen(article: articles[idx], articleIndex: idx);
-      },
+        },
+      ),
     );
   }
 }

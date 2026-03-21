@@ -6,13 +6,17 @@ import 'package:google_fonts/google_fonts.dart';
 // ──────────────────────────────────────────────
 abstract final class AppColors {
   // Backgrounds (deep blacks with subtle variations)
-  static const Color background = Color(0xFF0A0A0A); // slightly lighter than pure black
+  static const Color background = Color(
+    0xFF0A0A0A,
+  ); // slightly lighter than pure black
   static const Color backgroundElevated = Color(0xFF121212); // elevated surface
   static const Color card = Color(0xFF1C1C1C); // refined dark card surface
   static const Color cardHover = Color(0xFF242424); // card hover state
-  
+
   // Text (white hierarchy)
-  static const Color textPrimary = Color(0xFFF5F5F5); // soft white for reduced eye strain
+  static const Color textPrimary = Color(
+    0xFFF5F5F5,
+  ); // soft white for reduced eye strain
   static const Color textSecondary = Color(0xFFB3B3B3); // medium grey
   static const Color textTertiary = Color(0xFF737373); // subtle grey
   static const Color textHint = Color(0xFF525252); // muted grey
@@ -39,7 +43,7 @@ abstract final class AppColors {
   static const Color success = Color(0xFF10B981); // green success
   static const Color warning = Color(0xFFF59E0B); // amber warning
   static const Color disabled = Color(0xFF404040); // disabled state
-  
+
   // Shadows (refined for depth)
   static const Color shadowLight = Color(0x14000000); // subtle shadow
   static const Color shadowMedium = Color(0x28000000); // medium shadow
@@ -260,10 +264,12 @@ final ThemeData appTheme = ThemeData(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
     ),
   ),
-  cardTheme: const CardTheme(
+  cardTheme: const CardThemeData(
     color: AppColors.card,
     elevation: 0,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(24))),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(24)),
+    ),
     margin: EdgeInsets.all(0),
   ),
   chipTheme: const ChipThemeData(
@@ -271,14 +277,18 @@ final ThemeData appTheme = ThemeData(
     selectedColor: AppColors.chipSelected,
     disabledColor: AppColors.disabled,
     side: BorderSide(color: AppColors.chipBorder, width: 1),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+    ),
     labelStyle: TextStyle(color: AppColors.textPrimary),
     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
   ),
-  dialogTheme: const DialogTheme(
+  dialogTheme: const DialogThemeData(
     backgroundColor: AppColors.card,
     elevation: 0,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(28))),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(28)),
+    ),
   ),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: AppColors.card,
